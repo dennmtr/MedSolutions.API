@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MedSolutions.App\MedSolutions.App.csproj" />
+    <ProjectReference Include="..\MedSolutions.Shared\MedSolutions.Shared.csproj" />
+    <ProjectReference Include="..\MedSolutions.Domain\MedSolutions.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
