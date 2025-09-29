@@ -1,4 +1,5 @@
 using MedSolutions.Domain.Models;
+using MedSolutions.Infrastructure.Data.Helpers;
 using MedSolutions.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -21,7 +22,7 @@ public class UpdateTimestampsInterceptor : ISaveChangesInterceptor
 
     public static void OnSavingChanges(DbContext context)
     {
-        DbProviderInfo dbProviderInfo = new DbProviderInfo(context.Database.ProviderName);
+        var dbProviderInfo = new DbProviderInfo(context.Database.ProviderName);
 
         IEnumerable<Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<BaseEntity>> entries = context.ChangeTracker.Entries<BaseEntity>()
             .Where(e => e.State is EntityState.Deleted or EntityState.Modified or EntityState.Added);

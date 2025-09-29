@@ -7,6 +7,11 @@ using MedSolutions.Infrastructure.Data.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using MedSolutions.App;
+using MedSolutions.Infrastructure;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -18,10 +23,15 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-builder.Services.AddScoped<Seeder>();
+builder.Services
+    .AddApplication()
+    .AddInfrastructure()
+    ;
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
+
+
 builder.Services.AddAutoMapper(config => {
     config.AddProfile<UserProfile>();
     config.AddProfile<MedicalProfileProfile>();
@@ -61,6 +71,29 @@ builder.Services.AddIdentity<User, IdentityRole>(option => {
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MedSolutionsDbContext>()
     .AddDefaultTokenProviders();
+
+var jwtKey = builder.Configuration["JWT:Key"];
+
+if (string.IsNullOrEmpty(jwtKey))
+{
+    throw new InvalidOperationException("JWT: Security key is not configured.");
+}
+
+builder.Services.AddAuthentication(x => {
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(o => {
+        o.SaveToken = true;
+        o.TokenValidationParameters = new TokenValidationParameters {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            RequireExpirationTime = false,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        };
+    });
 
 await using WebApplication app = builder.Build();
 
@@ -114,7 +147,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
-// app.UseAuthorization();
+app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
 await app.RunAsync();

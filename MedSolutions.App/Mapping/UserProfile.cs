@@ -8,6 +8,8 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
+        CreateMap<User, LoginResponseDTO>()
+           ;
         CreateMap<User, UserDTO>()
            ;
     }
