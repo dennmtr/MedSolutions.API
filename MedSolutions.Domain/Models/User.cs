@@ -13,5 +13,4 @@ public class User : IdentityUser
     public string? MobileNumber { get; set; }
     public bool? IsActive { get; set; } = true;
     public MedicalProfile? MedicalProfile { get; set; }
-
 }

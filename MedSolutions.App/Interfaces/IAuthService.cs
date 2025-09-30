@@ -5,5 +5,6 @@ namespace MedSolutions.App.Interfaces;
 public interface IAuthService
 {
     Task<LoginResponseDTO> LoginAsync(LoginRequestDTO loginRequest);
-    Task LogoutAsync();
+    Task<LoginResponseDTO> RefreshTokenAsync(string? userId, string? refreshToken);
+    Task LogoutAsync(string? userId);
 }

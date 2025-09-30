@@ -1,3 +1,7 @@
 namespace MedSolutions.App.DTOs;
 
-public class LoginResponseDTO { }
+public class LoginResponseDTO
+{
+    public required string Token { get; set; }
+    public string? RefreshToken { get; set; }
+}

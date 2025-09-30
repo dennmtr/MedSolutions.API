@@ -12,10 +12,17 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using MedSolutions.App;
 using MedSolutions.Infrastructure;
+using MedSolutions.Api.Exceptions;
+using MedSolutions.Api.Middlewares;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Logging.ClearProviders();
+
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options => {
+        options.InvalidModelStateResponseFactory = ValidationResponseFactory.CreateInvalidModelStateResponse;
+    });
 
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
@@ -84,14 +91,15 @@ builder.Services.AddAuthentication(x => {
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
     .AddJwtBearer(o => {
-        o.SaveToken = true;
+        // o.SaveToken = true;
         o.TokenValidationParameters = new TokenValidationParameters {
-            ValidateIssuer = false,
-            ValidateAudience = false,
+            ValidateIssuer = true,
+            ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            RequireExpirationTime = false,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            ValidAudience = builder.Configuration["JWT:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!))
         };
     });
 
@@ -133,6 +141,7 @@ if (app.Environment.IsDevelopment())
     await seeder.SeedAsync();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
