@@ -1,7 +1,8 @@
-using System.ComponentModel.DataAnnotations;
 using System.Net;
-using MedSolutions.Api.DTOs;
 using MedSolutions.Api.Exceptions;
+using MedSolutions.Api.Logging;
+using MedSolutions.App.DTOs;
+using MedSolutions.Domain.Exceptions;
 
 namespace MedSolutions.Api.Middlewares;
 
@@ -22,20 +23,22 @@ public class ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandling
 
             if (statusCode == HttpStatusCode.InternalServerError)
             {
-                _logger.LogError(ex, "Unhandled exception occurred");
+                _logger.InternalServerError(ex);
             }
 
-            var message = ExceptionMapper.GetMessage(ex, statusCode);
-
             var response = new ErrorResponseDTO {
-                Success = false,
                 Status = statusCode,
-                Message = message
+                Message = ex.Message
             };
 
-            if (ex is ValidationException vex)
+            if (ex is AppException aex)
             {
-                response.Errors = new[] { vex.Message };
+                response.Key = aex.Key;
+                response.Values = aex.Values;
+            }
+            else
+            {
+                response.Key = "error.unexpected";
             }
 
             context.Response.ContentType = "application/json";

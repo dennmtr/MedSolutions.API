@@ -1,15 +1,16 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using MedSolutions.Api.Logging;
 using MedSolutions.App.DTOs;
+using MedSolutions.App.Exceptions;
+using MedSolutions.App.Interfaces;
 using MedSolutions.Domain.Models;
+using MedSolutions.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Logging;
-using System.Security.Cryptography;
-using MedSolutions.Api.Logging;
-using MedSolutions.App.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 
 namespace MedSolutions.App.Services;
 
@@ -23,87 +24,95 @@ public class AuthService(
     private readonly SignInManager<User> _signInManager = signInManager;
     private readonly IConfiguration _config = config;
     private readonly ILogger<AuthService> _logger = logger;
-
-    public async Task<LoginResponseDTO> LoginAsync(LoginRequestDTO loginRequest)
+    public async Task<TokenDTO> LoginAsync(LoginRequestDTO request)
     {
-        if (string.IsNullOrWhiteSpace(loginRequest.Email) || string.IsNullOrWhiteSpace(loginRequest.Password))
+        if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Password))
         {
-            throw new ArgumentException("auth.required.credentials");
+            throw new AuthenticationFailedException();
         }
 
-        var user = await _userManager.FindByEmailAsync(loginRequest.Email);
-        if (user?.Email == null)
+        var user = await _userManager.FindByEmailAsync(request.Email);
+        if (user is null)
         {
-            _logger.AuthFailedLoginAttempt(loginRequest.Email);
-            throw new UnauthorizedAccessException("auth.invalid.email");
+            _logger.EmailNotFound(request.Email);
+            throw new AuthenticationFailedException(request.Email);
         }
 
-        var result = await _signInManager.CheckPasswordSignInAsync(user, loginRequest.Password, lockoutOnFailure: false);
-        if (!result.Succeeded)
+        var signInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
+        if (!signInResult.Succeeded)
         {
-            _logger.AuthFailedLoginAttempt(loginRequest.Email);
-            throw new UnauthorizedAccessException("auth.invalid.credentials");
+            _logger.AuthenticationFailed(request.Email);
+            throw new AuthenticationFailedException(request.Email);
         }
 
-        var userRoles = await _userManager.GetRolesAsync(user);
-
-        var token = CreateJwtToken(user, userRoles);
+        var roles = await _userManager.GetRolesAsync(user);
+        var accessToken = CreateJwtToken(user, roles);
 
         var existingClaims = await _userManager.GetClaimsAsync(user);
-        var oldRefreshClaims = existingClaims.Where(c => c.Type == "RefreshToken").ToList();
-        foreach (var old in oldRefreshClaims)
-        {
-            await _userManager.RemoveClaimAsync(user, old);
-        }
+        await RevokeAllRefreshTokensForUserAsync(user, existingClaims);
 
-        var refreshToken = GenerateRefreshToken(out DateTime refreshTokenExpiration);
-        await _userManager.AddClaimAsync(user, new Claim("RefreshToken", $"{refreshToken}|{refreshTokenExpiration:o}"));
 
-        return new LoginResponseDTO {
-            Token = new JwtSecurityTokenHandler().WriteToken(token),
-            RefreshToken = refreshToken
+        var refreshTokenDays = int.Parse(_config["JWT:RefreshTokenExpirationDays"] ?? "7");
+        var refreshTokenExpiry = request.RememberMe
+            ? DateTime.MaxValue
+            : DateTime.UtcNow.AddDays(refreshTokenDays);
+
+        var refreshToken = GenerateRefreshToken(refreshTokenExpiry);
+        await _userManager.AddClaimAsync(user, new Claim("RefreshToken", refreshToken));
+
+        return new TokenDTO {
+            Token = new JwtSecurityTokenHandler().WriteToken(accessToken),
+            RefreshToken = refreshToken,
+            RefreshTokenExpirationDate = refreshTokenExpiry
         };
     }
 
-    public async Task<LoginResponseDTO> RefreshTokenAsync(string? userId, string? refreshToken)
+    public async Task<TokenDTO> RefreshTokenAsync(string refreshToken)
     {
-
-        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(refreshToken))
+        if (string.IsNullOrEmpty(refreshToken))
         {
-            throw new ArgumentException("auth.required.credentials");
+            throw new InvalidTokenException(refreshToken);
         }
 
-        var user = await _userManager.FindByIdAsync(userId ?? "") ?? throw new UnauthorizedAccessException("auth.unauthorized");
-
-        var existingClaims = await _userManager.GetClaimsAsync(user);
-
-        var oldRefreshTokenClaim = existingClaims
-            .FirstOrDefault(c => c.Type == "RefreshToken" && c.Value.Split('|')[0] == refreshToken);
-
-        if (oldRefreshTokenClaim == null)
+        var users = await _userManager.GetUsersForClaimAsync(new Claim("RefreshToken", refreshToken));
+        var user = users.SingleOrDefault();
+        if (user is null)
         {
-            _logger.AuthFailedRefreshTokenAttempt(refreshToken);
-            throw new UnauthorizedAccessException("auth.unauthorized");
+            _logger.UserWithTokenNotFound(refreshToken);
+            throw new InvalidTokenException(refreshToken);
         }
 
-        var parts = oldRefreshTokenClaim.Value.Split('|');
-        if (!DateTime.TryParse(parts[1], out var refreshTokenExpiration) || refreshTokenExpiration < DateTime.UtcNow)
+        var claims = await _userManager.GetClaimsAsync(user);
+        var activeTokenClaim = claims.SingleOrDefault(c => c.Type == "RefreshToken" && c.Value == refreshToken);
+        if (activeTokenClaim == null)
         {
-            throw new UnauthorizedAccessException("auth.unauthorized");
+            _logger.InvalidRefreshToken(refreshToken, user.Email);
+            throw new InvalidTokenException(refreshToken);
         }
 
-        await _userManager.RemoveClaimAsync(user, oldRefreshTokenClaim);
+        var principal = ValidateRefreshToken(refreshToken) ?? throw new InvalidTokenException(refreshToken);
+        var jwt = new JwtSecurityTokenHandler().ReadJwtToken(refreshToken);
+        var refreshTokenExpiry = jwt.ValidTo;
 
-        var userRoles = await _userManager.GetRolesAsync(user);
+        var extendedExpiry = DateTime.UtcNow.AddDays(int.Parse(_config["JWT:RefreshTokenExpirationDays"] ?? "7"));
 
-        var token = CreateJwtToken(user, userRoles);
+        if (refreshTokenExpiry.TrimToMinutes() < extendedExpiry.TrimToMinutes())
+        {
+            await _userManager.RemoveClaimAsync(user, activeTokenClaim);
+            var newRefreshToken = GenerateRefreshToken(extendedExpiry);
+            await _userManager.AddClaimAsync(user, new Claim("RefreshToken", newRefreshToken));
 
-        refreshToken = GenerateRefreshToken(out refreshTokenExpiration);
-        await _userManager.AddClaimAsync(user, new Claim("RefreshToken", $"{refreshToken}|{refreshTokenExpiration:o}"));
+            refreshToken = newRefreshToken;
+            refreshTokenExpiry = extendedExpiry;
+        }
+        var roles = await _userManager.GetRolesAsync(user);
 
-        return new LoginResponseDTO {
-            Token = new JwtSecurityTokenHandler().WriteToken(token),
-            RefreshToken = refreshToken
+        var newAccessToken = CreateJwtToken(user, roles);
+
+        return new TokenDTO() {
+            Token = new JwtSecurityTokenHandler().WriteToken(newAccessToken),
+            RefreshToken = refreshToken,
+            RefreshTokenExpirationDate = refreshTokenExpiry
         };
     }
 
@@ -116,12 +125,7 @@ public class AuthService(
         }
 
         var claims = await _userManager.GetClaimsAsync(user);
-        var refreshTokenClaims = claims.Where(c => c.Type == "RefreshToken").ToList();
-
-        foreach (var claim in refreshTokenClaims)
-        {
-            await _userManager.RemoveClaimAsync(user, claim);
-        }
+        await RevokeAllRefreshTokensForUserAsync(user, claims);
 
         await _signInManager.SignOutAsync();
     }
@@ -131,35 +135,79 @@ public class AuthService(
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Key"]!));
         var creds = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
 
-        var tokenExpiration = DateTime.UtcNow.AddMinutes(int.Parse(_config["JWT:AccessTokenExpirationMinutes"] ?? "15"));
+        var expiration = DateTime.UtcNow.AddMinutes(int.Parse(_config["JWT:AccessTokenExpirationMinutes"] ?? "15"));
 
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, user.Id),
-            new(JwtRegisteredClaimNames.Email, user.Email!),
-            new(JwtRegisteredClaimNames.Name, user.FirstName),
-            new(JwtRegisteredClaimNames.FamilyName, user.LastName)
-        };
+        new(JwtRegisteredClaimNames.Sub, user.Id),
+        new(JwtRegisteredClaimNames.Email, user.Email!),
+        new(JwtRegisteredClaimNames.Name, user.FirstName),
+        new(JwtRegisteredClaimNames.FamilyName, user.LastName)
+    };
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         return new JwtSecurityToken(
             issuer: _config["JWT:Issuer"],
             audience: _config["JWT:Audience"],
             claims: claims,
-            expires: tokenExpiration,
+            expires: expiration,
             signingCredentials: creds
         );
     }
 
-    private string GenerateRefreshToken(out DateTime expiration)
+    private async Task RevokeAllRefreshTokensForUserAsync(User user, IEnumerable<Claim> currentClaims)
     {
-        var randomBytes = RandomNumberGenerator.GetBytes(64);
-        var refreshToken = Convert.ToBase64String(randomBytes)
-            .TrimEnd('=')
-            .Replace('+', '-')
-            .Replace('/', '_');
-
-        expiration = DateTime.UtcNow.AddDays(int.Parse(_config["JWT:RefreshTokenExpirationDays"] ?? "7"));
-        return refreshToken;
+        var refreshClaims = currentClaims.Where(c => c.Type == "RefreshToken").ToList();
+        foreach (var claim in refreshClaims)
+        {
+            await _userManager.RemoveClaimAsync(user, claim);
+        }
     }
+
+    private string GenerateRefreshToken(DateTime expiration)
+    {
+        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:Key"]!));
+        var creds = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new List<Claim>
+        {
+        new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new(JwtRegisteredClaimNames.Exp, new DateTimeOffset(expiration).ToUnixTimeSeconds().ToString())
+    };
+
+        var token = new JwtSecurityToken(
+            issuer: _config["JWT:Issuer"],
+            audience: _config["JWT:Audience"],
+            claims: claims,
+            expires: expiration,
+            signingCredentials: creds
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private ClaimsPrincipal? ValidateRefreshToken(string refreshToken)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_config["JWT:Key"]!);
+
+        try
+        {
+            return handler.ValidateToken(refreshToken, new TokenValidationParameters {
+                ValidateIssuer = true,
+                ValidIssuer = _config["JWT:Issuer"],
+                ValidateAudience = true,
+                ValidAudience = _config["JWT:Audience"],
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            }, out _);
+        }
+        catch
+        {
+            return null;
+        }
+    }
+
 }

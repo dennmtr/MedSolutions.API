@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Security;
+using MedSolutions.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedSolutions.Api.Exceptions;
@@ -27,12 +28,10 @@ public static class ExceptionMapper
         { typeof(HttpRequestException), HttpStatusCode.BadGateway },
     };
 
-    public static HttpStatusCode GetStatusCode(Exception ex) => _exceptionStatusCodeMap.TryGetValue(ex.GetType(), out var status) ? status : HttpStatusCode.InternalServerError;
-
-    public static string GetMessage(Exception ex, HttpStatusCode statusCode)
+    public static HttpStatusCode GetStatusCode(Exception ex)
     {
-        return statusCode == HttpStatusCode.InternalServerError
-            ? "unexpected.error"
-            : ex.Message;
+        return ex is AppException appException
+            ? appException.StatusCode
+            : _exceptionStatusCodeMap.TryGetValue(ex.GetType(), out var status) ? status : HttpStatusCode.InternalServerError;
     }
 }

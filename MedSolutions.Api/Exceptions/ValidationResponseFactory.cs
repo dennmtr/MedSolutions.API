@@ -1,5 +1,5 @@
 using System.Net;
-using MedSolutions.Api.DTOs;
+using MedSolutions.App.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MedSolutions.Api.Exceptions;
@@ -15,10 +15,10 @@ public static class ValidationResponseFactory
             .ToArray();
 
         var response = new ErrorResponseDTO {
-            Success = false,
             Status = HttpStatusCode.BadRequest,
-            Message = "validation.error",
-            Errors = errors
+            Message = "One or more validation errors occurred.",
+            Key = "error.validation",
+            Values = errors
         };
 
         return new BadRequestObjectResult(response);

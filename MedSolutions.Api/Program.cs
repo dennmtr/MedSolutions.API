@@ -1,21 +1,27 @@
+using System.Text;
+using System.Threading.RateLimiting;
+using MedSolutions.Api;
+using MedSolutions.Api.Exceptions;
+using MedSolutions.Api.Filters;
 using MedSolutions.Api.Logging;
+using MedSolutions.Api.Middlewares;
+using MedSolutions.App;
 using MedSolutions.App.Mapping;
 using MedSolutions.Domain.Models;
+using MedSolutions.Infrastructure;
 using MedSolutions.Infrastructure.Data;
 using MedSolutions.Infrastructure.Data.Interceptors;
 using MedSolutions.Infrastructure.Data.Seed;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using MedSolutions.App;
-using MedSolutions.Infrastructure;
-using MedSolutions.Api.Exceptions;
-using MedSolutions.Api.Middlewares;
+using Serilog;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+
 
 builder.Logging.ClearProviders();
 
@@ -33,9 +39,12 @@ builder.Host.UseSerilog();
 builder.Services
     .AddApplication()
     .AddInfrastructure()
+    .AddApi()
     ;
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => {
+    options.Filters.Add(new ApiResponseWrapperFilter());
+});
 builder.Services.AddHttpContextAccessor();
 
 
@@ -103,7 +112,39 @@ builder.Services.AddAuthentication(x => {
         };
     });
 
+if (builder.Environment.IsProduction())
+{
+    builder.Services.Configure<ForwardedHeadersOptions>(options => {
+        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    });
+}
+
+builder.Services.AddRateLimiter(options => {
+    options.AddPolicy("RefreshTokenPerCookie", context => {
+
+        var refreshToken = context.Request.Cookies.FirstOrDefault(c => c.Key == "RefreshToken").Value ?? "";
+
+        return string.IsNullOrEmpty(refreshToken)
+            ? throw new InvalidOperationException("Cannot determine refresh token for rate limiting.")
+            : RateLimitPartition.GetTokenBucketLimiter(
+            partitionKey: refreshToken,
+            factory: _ => new TokenBucketRateLimiterOptions {
+                TokenLimit = 1,
+                QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+                QueueLimit = 0,
+                ReplenishmentPeriod = TimeSpan.FromMinutes(int.Parse(builder.Configuration["JWT:AccessTokenExpirationMinutes"] ?? "15") - 1),
+                TokensPerPeriod = 1,
+                AutoReplenishment = true
+            });
+    });
+});
+
 await using WebApplication app = builder.Build();
+
+if (app.Environment.IsProduction())
+{
+    app.UseForwardedHeaders();
+}
 
 app.UseSerilogRequestLogging(options => {
     options.EnrichDiagnosticContext = (diagnosticContext, httpContext) => {
@@ -132,30 +173,36 @@ if (app.Environment.IsDevelopment())
     {
         // For development purposes only, drop and recreate the database to match the current model.
         // Remove this section if you plan to maintain migrations for schema updates.
-        await dbContext.Database.EnsureDeletedAsync();
-        logger.DatabaseWarning("Database deleted because no migrations exist.");
+        // await dbContext.Database.EnsureDeletedAsync();
+        // logger.DatabaseWarning("Database deleted because no migrations exist.");
         await dbContext.Database.EnsureCreatedAsync();
         logger.DatabaseWarning("Database created fresh from the current model.");
     }
 
     await seeder.SeedAsync();
 }
-
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 
+if (app.Environment.IsProduction())
+{
+    app.UseForwardedHeaders();
+
+
+}
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // app.UseSwagger();
+    // app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseRateLimiter();
+
 app.UseAuthorization();
 app.MapControllers();
 app.MapFallbackToFile("index.html");

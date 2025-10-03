@@ -146,11 +146,11 @@ public class Seeder(
                     .Select(p => new { p.PatientId, p.PairedPatientId })
                     .ToListAsync();
 
-                HashSet<(int, int)> pairSet = new HashSet<(int, int)>(
+                HashSet<(int, int)> pairSet = new(
                     existingPairs.Select(ep => (ep.PatientId, ep.PairedPatientId))
                 );
 
-                List<PatientPair> uniquePairs = new List<PatientPair>();
+                List<PatientPair> uniquePairs = new();
 
                 foreach (PatientPair p in fakePatientPairs)
                 {
@@ -183,14 +183,14 @@ public class Seeder(
 
     private static Mapper GetMapper(ILoggerFactory loggerFactory)
     {
-        MapperConfiguration config = new MapperConfiguration(cfg => {
+        MapperConfiguration config = new(cfg => {
             cfg.AddProfile<UserProfile>();
             cfg.AddProfile<MedicalProfileProfile>();
         }, loggerFactory);
 
         config.CompileMappings();
 
-        Mapper mapper = new Mapper(config);
+        Mapper mapper = new(config);
         return mapper;
     }
 }

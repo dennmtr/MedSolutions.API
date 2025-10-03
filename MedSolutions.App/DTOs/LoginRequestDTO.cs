@@ -4,13 +4,13 @@ namespace MedSolutions.App.DTOs;
 
 public class LoginRequestDTO
 {
-    [MaxLength(256, ErrorMessage = "validation.email.length")]
-    [Required(ErrorMessage = "validation.email.required")]
-    [EmailAddress(ErrorMessage = "validation.email")]
+    [MaxLength(256, ErrorMessage = "error.validation.email_length")]
+    [Required(ErrorMessage = "error.validation.email_required")]
+    [EmailAddress(ErrorMessage = "error.validation.email_format")]
     public required string Email { get; set; }
 
-    [Required(ErrorMessage = "validation.password.length")]
-    [StringLength(128, ErrorMessage = "", MinimumLength = 6)]
+    [Required(ErrorMessage = "error.validation.password_required")]
+    [StringLength(128, ErrorMessage = "error.validation.password_length", MinimumLength = 6)]
     public required string Password { get; set; }
-    public bool? RememberMe { get; set; } = false;
+    public bool RememberMe { get; set; }
 }
