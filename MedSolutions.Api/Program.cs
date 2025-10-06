@@ -175,11 +175,11 @@ if (app.Environment.IsDevelopment())
         // Remove this section if you plan to maintain migrations for schema updates.
         // await dbContext.Database.EnsureDeletedAsync();
         // logger.DatabaseWarning("Database deleted because no migrations exist.");
-        await dbContext.Database.EnsureCreatedAsync();
-        logger.DatabaseWarning("Database created fresh from the current model.");
+        // await dbContext.Database.EnsureCreatedAsync();
+        // logger.DatabaseWarning("Database created fresh from the current model.");
     }
 
-    await seeder.SeedAsync();
+    // await seeder.SeedAsync();
 }
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
@@ -196,7 +196,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     // app.UseSwagger();
     // app.UseSwaggerUI();
-    app.UseDeveloperExceptionPage();
+    //app.UseDeveloperExceptionPage();
 }
 
 

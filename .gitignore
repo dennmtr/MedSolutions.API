@@ -109,3 +109,5 @@ Migrations
 Logs
 
 *.cmd
+
+.vs

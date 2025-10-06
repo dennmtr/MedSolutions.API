@@ -3,7 +3,7 @@ using MedSolutions.Domain.Exceptions;
 
 namespace MedSolutions.App.Exceptions;
 
-public class InvalidTokenException(string? token = null) : AppException("Invalid token.", "error.invalid_token")
+public class InvalidTokenException(string? token = null) : AppException("Invalid token.", "error.exception.invalidToken")
 {
     public override HttpStatusCode StatusCode => HttpStatusCode.Unauthorized;
 }

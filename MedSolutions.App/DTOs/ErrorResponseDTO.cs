@@ -6,7 +6,9 @@ public class ErrorResponseDTO
 {
     public bool Success { get; set; }
     public required HttpStatusCode Status { get; set; }
-    public required string Message { get; set; } = null!;
-    public string? Key { get; set; }
-    public string[]? Values { get; set; } = [];
+    public string? Type { get; set; }
+    public required string Title { get; set; } = null!;
+    public Dictionary<string, object>? Params { get; set; } = [];
+    public string? Instance { get; set; }
+    public object? StackTrace { get; set; }
 }
