@@ -53,7 +53,7 @@ public class AuthService(
 
 
         var refreshTokenDays = int.Parse(_config["JWT:RefreshTokenExpirationDays"] ?? "7");
-        var refreshTokenExpiry = request.RememberMe
+        var refreshTokenExpiry = request.RememberMe.GetValueOrDefault()
             ? DateTime.MaxValue
             : DateTime.UtcNow.AddDays(refreshTokenDays);
 

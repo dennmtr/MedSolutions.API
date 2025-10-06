@@ -34,7 +34,7 @@ public class Seeder(
         if (await _dbContext.Users.AnyAsync())
         {
 
-            _logger.SeedNotify("Seeding skipped: users already exist.");
+            _logger.SeedSkipped();
             return;
         }
 
@@ -66,16 +66,16 @@ public class Seeder(
                     }
                     await _userManager.AddToRoleAsync(user, role);
 
-                    _logger.SeedNotify($"Initial user '{user.UserName}' created and assigned to '{role}' role.");
+                    _logger.UserCreatedSuccessfully(user.UserName!, role);
                 }
                 else
                 {
-                    _logger.SeedFailed($"Failed to create initial user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                    _logger.SeedFailed(string.Join(", ", result.Errors.Select(e => e.Description)));
                 }
             }
             else
             {
-                _logger.SeedWarning("No initial user config found. Skipping initial user seeding.");
+                _logger.UserConfigurationIsMissing();
             }
 
             string locale = _config.GetValue<string>("Data:Seed:BogusLocale") ?? "en";
@@ -92,7 +92,7 @@ public class Seeder(
             .CreateAsync(fakeUser, "123456");
             }
 
-            _logger.SeedNotify($"Added {fakeUsers.Count} fake profiles.");
+            _logger.ProfilesCreatedSuccessfully(fakeUsers.Count);
 
             List<MedicalProfile> profiles = await _dbContext.MedicalProfiles
             .Select(p => new MedicalProfile() {
@@ -122,7 +122,7 @@ public class Seeder(
             }
             await _dbContext.SaveChangesAsync();
 
-            _logger.SeedNotify($"Added fake patients for {fakeUsers.Count} profiles.");
+            _logger.PatientsCreatedSuccessfully(fakeUsers.Count);
 
             List<short> patientPairTypeIds = await _dbContext.PatientPairTypes
                 .Select(p => p.Id)
@@ -167,12 +167,12 @@ public class Seeder(
 
             }
             await _dbContext.SaveChangesAsync();
-            _logger.SeedNotify($"Added fake pairs for {profiles.Count} profiles.");
+            _logger.PairsCreatedSuccessfully(profiles.Count);
 
         }
         catch (Exception ex)
         {
-            _logger.SeedFailed("Database seeding failed. Rolling back transaction.", ex);
+            _logger.SeedFailed(ex);
 
             await transaction.RollbackAsync();
             throw;

@@ -167,16 +167,16 @@ if (app.Environment.IsDevelopment())
     {
 
         await dbContext.Database.MigrateAsync();
-        logger.DatabaseWarning("Pending migrations found and applied to the database.");
+        logger.MigrationsFoundAndApplied();
     }
     else
     {
         // For development purposes only, drop and recreate the database to match the current model.
         // Remove this section if you plan to maintain migrations for schema updates.
         // await dbContext.Database.EnsureDeletedAsync();
-        // logger.DatabaseWarning("Database deleted because no migrations exist.");
+        // logger.DatabaseDeleted();
         // await dbContext.Database.EnsureCreatedAsync();
-        // logger.DatabaseWarning("Database created fresh from the current model.");
+        // logger.DatabaseCreated();
     }
 
     // await seeder.SeedAsync();
