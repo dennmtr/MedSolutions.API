@@ -1,3 +1,4 @@
+using MedSolutions.App.Interfaces;
 using MedSolutions.Domain.Models;
 using MedSolutions.Infrastructure.Data.Configurations;
 using MedSolutions.Infrastructure.Data.Helpers;
@@ -5,11 +6,12 @@ using MedSolutions.Infrastructure.Data.Interceptors;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace MedSolutions.Infrastructure.Data;
 
-public class MedSolutionsDbContext(DbContextOptions<MedSolutionsDbContext> options) : IdentityDbContext<User>(options)
+public class MedSolutionsDbContext(DbContextOptions<MedSolutionsDbContext> options,
+        ICurrentMedicalProfileService currentMedicalProfileService) : IdentityDbContext<User>(options)
 {
-
     public required DbSet<MedicalProfile> MedicalProfiles { get; set; }
     public required DbSet<MedicalSpecialty> MedicalSpecialties { get; set; }
     public required DbSet<Patient> Patients { get; set; }
@@ -17,6 +19,8 @@ public class MedSolutionsDbContext(DbContextOptions<MedSolutionsDbContext> optio
     public required DbSet<Appointment> Appointments { get; set; }
     public required DbSet<PatientPairType> PatientPairTypes { get; set; }
     public required DbSet<PatientPair> PatientPairs { get; set; }
+
+    public string? CurrentMedicalProfileId { get; } = currentMedicalProfileService.MedicalProfileId;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -42,6 +46,9 @@ public class MedSolutionsDbContext(DbContextOptions<MedSolutionsDbContext> optio
 
         BusinessEntityConfiguration.Apply(builder, dbProviderInfo);
         BaseEntityConfiguration.Apply(builder, dbProviderInfo);
+
+        builder.Entity<Patient>()
+            .HasQueryFilter(p => p.MedicalProfileId == CurrentMedicalProfileId);
 
     }
 

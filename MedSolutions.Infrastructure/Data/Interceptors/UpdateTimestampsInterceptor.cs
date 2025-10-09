@@ -1,4 +1,4 @@
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Common.Models;
 using MedSolutions.Infrastructure.Data.Helpers;
 using MedSolutions.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-namespace MedSolutions.Domain.Models;
+namespace MedSolutions.Domain.Common.Models;
 
 public class VisibilityEntity : BaseEntity
 {

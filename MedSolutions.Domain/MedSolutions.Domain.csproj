@@ -6,14 +6,16 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="Attributes\**" />
+      <EmbeddedResource Remove="Attributes\**" />
+      <None Remove="Attributes\**" />
+    </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\MedSolutions.Shared\MedSolutions.Shared.csproj" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.9" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Attributes\" />
   </ItemGroup>
 
 </Project>

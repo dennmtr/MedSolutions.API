@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MedSolutions.App.DTOs;
+namespace MedSolutions.App.Common.DTOs;
 
 public class LoginRequestDTO
 {

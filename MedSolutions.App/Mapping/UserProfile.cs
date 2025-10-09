@@ -1,4 +1,5 @@
 using AutoMapper;
+using MedSolutions.App.Common.DTOs;
 using MedSolutions.App.DTOs;
 using MedSolutions.Domain.Models;
 

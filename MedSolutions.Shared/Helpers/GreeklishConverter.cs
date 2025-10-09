@@ -38,7 +38,7 @@ public class GreeklishConverter
         RegexOptions.Compiled
     );
 
-    public static string? ToGreeklish(string? source)
+    public static string ToGreeklish(string source)
     {
         if (string.IsNullOrEmpty(source))
         {
@@ -61,5 +61,22 @@ public class GreeklishConverter
                        .Replace("y", "i");
 
         return result;
+    }
+    public static bool ContainsGreek(string input)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return false;
+        }
+
+        foreach (char ch in input)
+        {
+            if (ch is (>= '\u0370' and <= '\u03FF') or  // Greek
+                (>= '\u1F00' and <= '\u1FFF'))    // Greek Extended
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

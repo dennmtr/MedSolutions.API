@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
-using MedSolutions.App.DTOs;
+using MedSolutions.App.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

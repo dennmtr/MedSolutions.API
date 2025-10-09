@@ -1,8 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MedSolutions.Api.Logging;
-using MedSolutions.App.DTOs;
+using MedSolutions.App.Logging;
+using MedSolutions.App.Common.DTOs;
 using MedSolutions.App.Exceptions;
 using MedSolutions.App.Interfaces;
 using MedSolutions.Domain.Models;
@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace MedSolutions.App.Services;
-
 public class AuthService(
     UserManager<User> userManager,
     SignInManager<User> signInManager,

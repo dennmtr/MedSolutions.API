@@ -1,6 +1,6 @@
 
 using System.Security.Claims;
-using MedSolutions.App.DTOs;
+using MedSolutions.App.Common.DTOs;
 using MedSolutions.App.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -68,7 +68,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpPost("logout")]
-    public async Task<IActionResult> Logout()
+    public async Task<ActionResult> Logout()
     {
         Response.Cookies.Delete("RefreshToken");
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

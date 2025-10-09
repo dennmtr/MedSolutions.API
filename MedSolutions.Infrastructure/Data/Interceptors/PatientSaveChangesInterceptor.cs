@@ -1,6 +1,6 @@
 using System.Linq.Expressions;
 using MedSolutions.Domain.Models;
-using MedSolutions.Shared.Helpers;
+using MedSolutions.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -56,26 +56,6 @@ public class PatientSaveChangesInterceptor : SaveChangesInterceptor
 
         PropertyEntry<Patient, string?> target = entry.Property(targetProp);
 
-        target.CurrentValue = !string.IsNullOrWhiteSpace(sourceValue) && ContainsGreek(sourceValue)
-            ? (GreeklishConverter.ToGreeklish(sourceValue)?.ToLowerInvariant())
-            : null;
-    }
-
-    public static bool ContainsGreek(string? input)
-    {
-        if (string.IsNullOrEmpty(input))
-        {
-            return false;
-        }
-
-        foreach (char ch in input)
-        {
-            if (ch is (>= '\u0370' and <= '\u03FF') or  // Greek
-                (>= '\u1F00' and <= '\u1FFF'))    // Greek Extended
-            {
-                return true;
-            }
-        }
-        return false;
+        target.CurrentValue = sourceValue?.ToLatin().ToLowerInvariant();
     }
 }

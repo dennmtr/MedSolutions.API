@@ -1,8 +1,7 @@
-namespace MedSolutions.App.DTOs;
+namespace MedSolutions.App.Common.DTOs;
 
-public class TokenDTO
+public class TokenDTO : LoginResponseDTO
 {
-    public required string Token { get; set; }
     public required string RefreshToken { get; set; }
     public required DateTime RefreshTokenExpirationDate { get; set; }
 }

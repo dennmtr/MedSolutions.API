@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 
-namespace MedSolutions.Api.Logging;
+namespace MedSolutions.App.Logging;
 
 public static partial class AuthLoggerExtensions
 {

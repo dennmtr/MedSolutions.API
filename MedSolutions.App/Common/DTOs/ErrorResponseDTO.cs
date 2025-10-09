@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace MedSolutions.App.DTOs;
+namespace MedSolutions.App.Common.DTOs;
 
 public class ErrorResponseDTO
 {

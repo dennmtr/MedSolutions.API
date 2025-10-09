@@ -1,4 +1,4 @@
-namespace MedSolutions.App.DTOs;
+namespace MedSolutions.App.Common.DTOs;
 
 public class LoginResponseDTO
 {

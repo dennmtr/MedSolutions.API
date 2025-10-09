@@ -1,4 +1,4 @@
-using MedSolutions.App.DTOs;
+using MedSolutions.App.Common.DTOs;
 
 namespace MedSolutions.App.Interfaces;
 

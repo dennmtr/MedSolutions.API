@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using MedSolutions.Domain.Common.Models;
 
 namespace MedSolutions.Domain.Models;
 

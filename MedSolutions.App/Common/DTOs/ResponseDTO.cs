@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace MedSolutions.App.DTOs;
+namespace MedSolutions.App.Common.DTOs;
 
 public class ResponseDTO<T>(T data, HttpStatusCode status = HttpStatusCode.OK)
 {

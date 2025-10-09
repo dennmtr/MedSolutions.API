@@ -1,8 +1,8 @@
 using System.Net;
 using MedSolutions.Api.Exceptions;
 using MedSolutions.Api.Logging;
-using MedSolutions.App.DTOs;
-using MedSolutions.Domain.Exceptions;
+using MedSolutions.App.Common.DTOs;
+using MedSolutions.Domain.Common.Exceptions;
 using Microsoft.Extensions.Options;
 using JsonOptions = Microsoft.AspNetCore.Mvc.JsonOptions;
 

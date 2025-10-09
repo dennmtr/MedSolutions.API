@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MedSolutions.Domain.Models;
+namespace MedSolutions.Domain.Common.Models;
 
 public class BusinessEntity : BaseEntity
 {
