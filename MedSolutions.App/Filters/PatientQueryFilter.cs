@@ -1,7 +1,6 @@
 using MedSolutions.App.Common.Models;
+using MedSolutions.App.Extensions;
 using MedSolutions.Domain.Models;
-using MedSolutions.Shared.Extensions;
-using Microsoft.EntityFrameworkCore;
 
 //?filter[rank][in]=1,41&filter[birthdate][gte]=1950-01-01&filter[birthdate][lte]=2005-01-01
 
@@ -32,72 +31,48 @@ public class PatientQueryFilter : QueryFilter<Patient>
                 // &filter[lastName][eq]=
 
                 case "lastname":
-                    query = query.Where(p => EF.Functions.Like(propertyValue.ToLatin().ToLower(), p.LastNameLatin + "%"));
+                    query = query.WithFamilyName(propertyValue);
                     break;
 
                 // &filter[amka][eq]=
 
                 case "amka":
-                    query = query.Where(p =>
-                        p.AMKA != null &&
-                        EF.Functions.Like(propertyValue, p.AMKA + "%"));
+                    query = query.WithAMKA(propertyValue);
                     break;
 
                 // &filter[personalIdNumber][eq]=
 
                 case "personalidnumber":
-                    query = query.Where(p =>
-                        p.PersonalIdNumber != null &&
-                        EF.Functions.Like(propertyValue, p.PersonalIdNumber + "%"));
+                    query = query.WithPersonalIdNumber(propertyValue);
                     break;
 
-                // &filter[phoneNumber][eq]=
-
-                case "phonenumber":
-                    query = query.Where(p =>
-                        p.PhoneNumber != null &&
-                        EF.Functions.Like(propertyValue, p.PhoneNumber + "%"));
-                    break;
-
-                // &filter[mobileNumber][eq]=
+                // &filter[phoneNumber|mobileNumber][eq]=
 
                 case "mobilenumber":
-                    query = query.Where(p =>
-                        p.MobileNumber != null &&
-                        EF.Functions.Like(propertyValue, p.MobileNumber + "%"));
+                case "phonenumber":
+                    query = query.WithPhoneNumber(propertyValue);
                     break;
 
                 // &filter[email][eq]=
 
                 case "email":
-                    query = query.Where(p =>
-                        p.Email != null &&
-                        EF.Functions.Like(propertyValue.ToLowerInvariant(), p.Email + "%"));
+                    query = query.WithEmail(propertyValue);
                     break;
+
+                // &filter[birthdate][gte|lte] =
 
                 case "birthdate":
 
-                    // &filter[birthdate][gte]=
-
-                    if (propertyOperator == "gte" &&
-                        DateOnly.TryParse(propertyValue, out var gteDate))
+                    if (DateOnly.TryParse(propertyValue, out var date))
                     {
-                        query = query.Where(p => p.BirthDate >= gteDate);
-                    }
-
-                    //&filter[birthdate][lte]=
-
-                    if (propertyOperator == "lte" &&
-                        DateOnly.TryParse(propertyValue, out var lteDate))
-                    {
-                        query = query.Where(p => p.BirthDate <= lteDate);
+                        query = propertyOperator == "gte" ? query.WithDateOfBirthGreaterThanOrEqual(date) : query.WithDateOfBirthLessThanOrEqual(date);
                     }
                     break;
+
                 default:
                     break;
             }
         }
-
         return query;
     }
 }

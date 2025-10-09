@@ -5,9 +5,9 @@ namespace MedSolutions.App.Common.Models;
 public class QueryPagination
 {
     [FromQuery(Name = "page")]
-    public int? PageNumber { get; set; } = 1;
+    public int? PageNumber { get; init; } = 1;
     [FromQuery(Name = "pageSize")]
-    public int? PageSize { get; set; } = 10;
+    public int? PageSize { get; init; } = 10;
     public QueryPagination() { }
     public QueryPagination(int pageNumber, int pageSize)
     {
