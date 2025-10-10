@@ -8,24 +8,24 @@ public class MedicalProfile : BaseEntity
 {
     [Key]
     [ForeignKey(nameof(User))]
-    public string Id { get; set; } = null!;
+    public string Id { get; set; } = default!;
 
     public User? User { get; set; }
 
     [MaxLength(50)]
-    public string CompanyName { get; set; } = null!;
+    public string CompanyName { get; set; } = default!;
 
     [MaxLength(50)]
-    public string Tin { get; set; } = null!;
+    public string Tin { get; set; } = default!;
 
     [MaxLength(100)]
-    public string Address { get; set; } = null!;
+    public string Address { get; set; } = default!;
 
     [MaxLength(50)]
-    public string City { get; set; } = null!;
+    public string City { get; set; } = default!;
 
     [MaxLength(50)]
-    public string Zip { get; set; } = null!;
+    public string Zip { get; set; } = default!;
     public string? Comments { get; set; }
     public DateTime SubscriptionStartDate { get; set; }
     public DateTime SubscriptionEndDate { get; set; }

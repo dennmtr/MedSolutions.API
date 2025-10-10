@@ -9,5 +9,5 @@ public class MedicalSpecialty : BusinessEntity
     public Enums.MedicalSpecialty Id { get; set; }
 
     [MaxLength(50)]
-    public string Description { get; set; } = null!;
+    public string Description { get; set; } = default!;
 }

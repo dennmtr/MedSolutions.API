@@ -1,4 +1,4 @@
-﻿using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Models;
 
 namespace MedSolutions.App.Extensions;
 public static class PatientOrderedQueryExtensions

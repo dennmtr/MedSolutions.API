@@ -42,7 +42,7 @@ public class PatientBaseDTO
 
     [Required]
     [MaxLength(50)]
-    public string City { get; set; } = null!;
+    public string City { get; set; } = default!;
 
     [MaxLength(50)]
     public string? Zip { get; set; }

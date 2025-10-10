@@ -11,7 +11,7 @@ public class Appointment : VisibilityEntity
     public int Id { get; set; }
 
     [ForeignKey(nameof(MedicalProfile))]
-    public string MedicalProfileId { get; set; } = null!;
+    public string MedicalProfileId { get; set; } = default!;
     public MedicalProfile? MedicalProfile { get; set; }
 
     [ForeignKey(nameof(Patient))]

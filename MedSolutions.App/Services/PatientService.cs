@@ -1,14 +1,14 @@
 using AutoMapper;
-using MedSolutions.App.Common.Models;
 using MedSolutions.App.Common.Extensions;
+using MedSolutions.App.Common.Models;
 using MedSolutions.App.Filters;
 using MedSolutions.App.Interfaces;
+using MedSolutions.App.Logging;
 using MedSolutions.App.ViewModels;
 using MedSolutions.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using MedSolutions.App.Logging;
 
 namespace MedSolutions.App.Services;
 

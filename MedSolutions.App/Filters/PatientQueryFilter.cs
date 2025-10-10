@@ -18,13 +18,14 @@ public class PatientQueryFilter : QueryFilter<Patient>
 
         foreach (var (property, dict) in Filters)
         {
-            var propertyOperator = dict.FirstOrDefault().Key.Trim().ToLower();
-            var propertyValue = dict.FirstOrDefault().Value.Trim();
 
             if (string.IsNullOrEmpty(property))
             {
                 continue;
             }
+
+            var propertyOperator = dict.FirstOrDefault().Key.Trim().ToLower();
+            var propertyValue = dict.FirstOrDefault().Value.Trim();
 
             switch (property.ToLower())
             {
@@ -63,9 +64,9 @@ public class PatientQueryFilter : QueryFilter<Patient>
 
                 case "birthdate":
 
-                    if (DateOnly.TryParse(propertyValue, out var date))
+                    if (DateOnly.TryParse(propertyValue, out var targetDate))
                     {
-                        query = propertyOperator == "gte" ? query.WithDateOfBirthGreaterThanOrEqual(date) : query.WithDateOfBirthLessThanOrEqual(date);
+                        query = propertyOperator == "gte" ? query.WithDateOfBirthGreaterThanOrEqual(targetDate) : query.WithDateOfBirthLessThanOrEqual(targetDate);
                     }
                     break;
 

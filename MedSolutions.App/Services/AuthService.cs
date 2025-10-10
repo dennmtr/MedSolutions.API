@@ -1,10 +1,10 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using MedSolutions.App.Logging;
 using MedSolutions.App.Common.DTOs;
 using MedSolutions.App.Exceptions;
 using MedSolutions.App.Interfaces;
+using MedSolutions.App.Logging;
 using MedSolutions.Domain.Models;
 using MedSolutions.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;

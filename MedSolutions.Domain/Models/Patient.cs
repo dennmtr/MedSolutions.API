@@ -12,14 +12,14 @@ public class Patient : BaseEntity
     public int Id { get; set; }
 
     [ForeignKey(nameof(MedicalProfile))]
-    public string MedicalProfileId { get; set; } = null!;
+    public string MedicalProfileId { get; set; } = default!;
 
     public MedicalProfile? MedicalProfile { get; set; }
 
     [MaxLength(100)]
-    public string FirstName { get; set; } = null!;
+    public string FirstName { get; set; } = default!;
     [MaxLength(100)]
-    public string LastName { get; set; } = null!;
+    public string LastName { get; set; } = default!;
 
     [MaxLength(100)]
     public string? FirstNameLatin { get; set; }
@@ -42,7 +42,7 @@ public class Patient : BaseEntity
     public string? Address { get; set; }
 
     [MaxLength(50)]
-    public string City { get; set; } = null!;
+    public string City { get; set; } = default!;
 
     [MaxLength(50)]
     public string? CityLatin { get; set; }
@@ -65,7 +65,7 @@ public class Patient : BaseEntity
     public bool? Biopsy { get; set; } = false;
     public double? Latitude { get; set; }
     public double? Longitude { get; set; }
-    public Point Position { get; set; } = null!;
+    public Point Position { get; set; } = default!;
     public ICollection<Appointment> Appointments { get; set; } = [];
     public ICollection<PatientPair> FirstGroupPair { get; set; } = [];
     public ICollection<PatientPair> SecondGroupPair { get; set; } = [];

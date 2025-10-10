@@ -1,4 +1,4 @@
-﻿namespace MedSolutions.App.Common.Extensions;
+namespace MedSolutions.App.Common.Extensions;
 public static class QueryableOrderExtensions
 {
     public static IOrderedQueryable<T> ThenApply<T>(

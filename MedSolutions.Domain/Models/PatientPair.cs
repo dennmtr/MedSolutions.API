@@ -10,7 +10,7 @@ public class PatientPair : BaseEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [ForeignKey(nameof(MedicalProfile))]
-    public string MedicalProfileId { get; set; } = null!;
+    public string MedicalProfileId { get; set; } = default!;
     public MedicalProfile? MedicalProfile { get; set; }
     [ForeignKey(nameof(Patient))]
     public int PatientId { get; set; }

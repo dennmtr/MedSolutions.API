@@ -12,7 +12,7 @@ public class AppointmentType : BusinessEntity
     public Enums.MedicalSpecialty MedicalSpecialtyId { get; set; }
     public MedicalSpecialty? MedicalSpecialty { get; set; }
     [MaxLength(50)]
-    public string Description { get; set; } = null!;
+    public string Description { get; set; } = default!;
 }
 
 

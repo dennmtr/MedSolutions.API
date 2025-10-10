@@ -12,10 +12,15 @@ public class PatientQuerySorting() : QuerySorting<Patient>()
     {
         var isDescending = SortDirection == ListSortDirection.Descending;
         return key switch {
+
             "lastname" => Query.OrderByLastName(isDescending),
+
             "city" => Query.OrderByCity(isDescending),
+
             "birthdate" => Query.OrderByDateOfBirth(isDescending),
+
             "datemodified" => Query.OrderByDateModified(isDescending),
+
             _ => Query.OrderByAppointments(isDescending),
         };
     }
