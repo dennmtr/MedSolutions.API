@@ -7,6 +7,11 @@ public class CurrentMedicalProfileService(IHttpContextAccessor httpContextAccess
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
-    public string? MedicalProfileId =>
-        _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+    public Guid? MedicalProfileId
+    {
+        get {
+            var claimValue = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
+            return Guid.TryParse(claimValue, out var guid) ? guid : null;
+        }
+    }
 }

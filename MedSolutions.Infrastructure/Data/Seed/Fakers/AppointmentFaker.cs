@@ -19,10 +19,11 @@ public static class AppointmentFaker
         ];
 
         return new Faker<Appointment>(locale)
-            .RuleFor(p => p.MedicalProfileId, () => patient.MedicalProfileId)
-            .RuleFor(p => p.PatientId, () => patient.Id)
-            .RuleFor(p => p.AppointmentTypeId, f => f.PickRandom(appointmentTypeIds))
-            .RuleFor(p => p.Date, f => {
+            .RuleFor(a => a.Id, _ => GuidExtensions.NewSequentialGuid())
+            .RuleFor(a => a.MedicalProfileId, _ => patient.MedicalProfileId)
+            .RuleFor(a => a.PatientId, _ => patient.Id)
+            .RuleFor(a => a.AppointmentTypeId, (f) => f.PickRandom(appointmentTypeIds))
+            .RuleFor(a => a.Date, f => {
                 DateTime value;
 
                 if (f.Random.Bool(0.2f))
@@ -38,9 +39,9 @@ public static class AppointmentFaker
 
                 return value.TrimToSeconds();
             })
-            .RuleFor(p => p.Comments, f => f.Lorem.Paragraphs(f.Random.Int(1, 2)).OrNull(f, 0.8f))
-            .RuleFor(p => p.State, f => f.PickRandom<Enums.State>().OrNull(f, 0.9f))
-            .RuleFor(p => p.Priority, f => f.PickRandom<Enums.Priority>().OrNull(f, 0.9f))
+            .RuleFor(a => a.Comments, f => f.Lorem.Paragraphs(f.Random.Int(1, 2)).OrNull(f, 0.8f))
+            .RuleFor(a => a.State, f => f.PickRandom<Enums.State>().OrNull(f, 0.9f))
+            .RuleFor(a => a.Priority, f => f.PickRandom<Enums.Priority>().OrNull(f, 0.9f))
             ;
     }
 }

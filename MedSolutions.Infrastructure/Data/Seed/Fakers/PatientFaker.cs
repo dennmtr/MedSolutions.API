@@ -1,5 +1,6 @@
 using Bogus;
 using MedSolutions.Domain.Models;
+using MedSolutions.Shared.Extensions;
 using BogusGender = Bogus.DataSets.Name.Gender;
 using Enums = MedSolutions.Domain.Enums;
 
@@ -32,10 +33,11 @@ public static class PatientFaker
 
         return $"{firstPart.ToUpper()}{secondPart}{digits}";
     }
-    public static Faker<Patient> CreateFaker(string profileId, List<short> appointmentTypeIds, string locale = "en")
+    public static Faker<Patient> CreateFaker(Guid profileId, List<short> appointmentTypeIds, string locale = "en")
     {
         return new Faker<Patient>(locale)
-            .RuleFor(p => p.MedicalProfileId, () => profileId)
+            .RuleFor(p => p.Id, _ => GuidExtensions.NewSequentialGuid())
+            .RuleFor(p => p.MedicalProfileId, _ => profileId)
             .RuleFor(p => p.Gender, f => f.PickRandom<Enums.Gender>())
             .RuleFor(p => p.FirstName, (f, p) => f.Name.FirstName(p.Gender == Enums.Gender.Male ? BogusGender.Male : BogusGender.Female))
             .RuleFor(p => p.LastName, (f, p) => f.Name.LastName(p.Gender == Enums.Gender.Male ? BogusGender.Male : BogusGender.Female))

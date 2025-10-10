@@ -115,3 +115,17 @@ csharp_style_expression_bodied_operators = false:silent
 csharp_style_expression_bodied_lambdas = true:silent
 csharp_style_expression_bodied_local_functions = false:silent
 csharp_indent_labels = flush_left
+
+[**/Migrations/*.cs]
+dotnet_analyzer_diagnostic.severity = none
+dotnet_sort_system_directives_first = false
+dotnet_style_qualification_for_field = false
+dotnet_style_qualification_for_property = false
+dotnet_style_qualification_for_method = false
+csharp_preserve_single_line_blocks = true
+csharp_preserve_single_line_statements = true
+dotnet_format_enable = false
+dotnet_diagnostic.IDE0055.severity = none
+dotnet_diagnostic.IDE0161.severity = none
+dotnet_diagnostic.IDE0005.severity = none
+dotnet_diagnostic.CA1861.severity = none

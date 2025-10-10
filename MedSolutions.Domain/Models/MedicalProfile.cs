@@ -8,8 +8,7 @@ public class MedicalProfile : BaseEntity
 {
     [Key]
     [ForeignKey(nameof(User))]
-    public string Id { get; set; } = default!;
-
+    public Guid Id { get; set; }
     public User? User { get; set; }
 
     [MaxLength(50)]
@@ -35,5 +34,6 @@ public class MedicalProfile : BaseEntity
     public MedicalSpecialty? MedicalSpecialty { get; set; }
     public ICollection<Patient> Patients { get; set; } = [];
     public ICollection<Appointment> Appointments { get; set; } = [];
+    public ICollection<PatientPair> PatientPairs { get; set; } = [];
 
 }

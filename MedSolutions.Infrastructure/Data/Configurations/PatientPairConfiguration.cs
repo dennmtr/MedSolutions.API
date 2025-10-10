@@ -22,22 +22,21 @@ public class PatientPairConfiguration(DbProviderInfo dbProviderInfo) : IEntityTy
             );
         }
 
+        if (_dbProviderInfo.IsMySql())
+        {
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("UUID()");
+        }
+
+        //if (_dbProviderInfo.IsMsAccess())
+        //{
+        //    builder.Property(p => p.Id)
+        //        .HasDefaultValueSql("CREATEGUID()");
+        //}
+
         builder.Property(p => p.PatientPairTypeId)
             .HasDefaultValueSql("1")
             .ValueGeneratedOnAdd();
 
-        builder.HasOne(p => p.Patient)
-            .WithMany(p => p.FirstGroupPair)
-            .HasForeignKey(p => p.PatientId)
-            .HasPrincipalKey(p => p.Id)
-            .IsRequired(true)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasOne(p => p.PairedPatient)
-            .WithMany(p => p.SecondGroupPair)
-            .HasForeignKey(p => p.PairedPatientId)
-            .HasPrincipalKey(p => p.Id)
-            .IsRequired(true)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

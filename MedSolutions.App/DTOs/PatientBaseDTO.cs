@@ -4,11 +4,11 @@ namespace MedSolutions.App.DTOs;
 
 public class PatientBaseDTO
 {
-    public int? Id { get; set; }
+    public Guid? Id { get; set; }
 
     [Required]
     [Display(Name = "Medical Profile")]
-    public required string MedicalProfileId { get; set; }
+    public required Guid MedicalProfileId { get; set; }
 
     [Required]
     [MaxLength(100)]

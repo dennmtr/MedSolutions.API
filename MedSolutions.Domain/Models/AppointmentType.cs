@@ -7,6 +7,7 @@ namespace MedSolutions.Domain.Models;
 public class AppointmentType : BusinessEntity
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public short Id { get; set; }
     [ForeignKey(nameof(MedicalSpecialty))]
     public Enums.MedicalSpecialty MedicalSpecialtyId { get; set; }

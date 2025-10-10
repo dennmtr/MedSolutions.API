@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using MedSolutions.Domain.Common.Models;
 
 namespace MedSolutions.Domain.Models;
@@ -6,6 +7,7 @@ namespace MedSolutions.Domain.Models;
 public class MedicalSpecialty : BusinessEntity
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     public Enums.MedicalSpecialty Id { get; set; }
 
     [MaxLength(50)]

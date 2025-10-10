@@ -8,11 +8,10 @@ namespace MedSolutions.Domain.Models;
 public class Patient : BaseEntity
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     [ForeignKey(nameof(MedicalProfile))]
-    public string MedicalProfileId { get; set; } = default!;
+    public Guid MedicalProfileId { get; set; } = default!;
 
     public MedicalProfile? MedicalProfile { get; set; }
 
@@ -67,8 +66,6 @@ public class Patient : BaseEntity
     public double? Longitude { get; set; }
     public Point Position { get; set; } = default!;
     public ICollection<Appointment> Appointments { get; set; } = [];
-    public ICollection<PatientPair> FirstGroupPair { get; set; } = [];
-    public ICollection<PatientPair> SecondGroupPair { get; set; } = [];
 
 }
 

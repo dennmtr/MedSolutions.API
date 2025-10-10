@@ -64,14 +64,14 @@ public static class DependencyInjection
             }
         });
 
-        services.AddIdentity<User, IdentityRole>(option => {
+        services.AddIdentity<User, IdentityRole<Guid>>(option => {
             option.Password.RequireDigit = false;
             option.Password.RequiredLength = 6;
             option.Password.RequireNonAlphanumeric = false;
             option.Password.RequireUppercase = false;
             option.Password.RequireLowercase = false;
         })
-            .AddRoles<IdentityRole>()
+            .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<MedSolutionsDbContext>()
             .AddDefaultTokenProviders();
 

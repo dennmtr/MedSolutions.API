@@ -17,6 +17,18 @@ public class MedicalProfileConfiguration(DbProviderInfo dbProviderInfo) : IEntit
         builder.HasIndex(p => p.SubscriptionStartDate);
         builder.HasIndex(p => p.SubscriptionEndDate);
 
+        if (_dbProviderInfo.IsMySql())
+        {
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("UUID()");
+        }
+
+        //if (_dbProviderInfo.IsMsAccess())
+        //{
+        //    builder.Property(p => p.Id)
+        //        .HasDefaultValueSql("CREATEGUID()");
+        //}
+
         builder.Property(a => a.MedicalSpecialtyId)
             .HasDefaultValueSql("1")
             .ValueGeneratedOnAdd();
@@ -31,5 +43,13 @@ public class MedicalProfileConfiguration(DbProviderInfo dbProviderInfo) : IEntit
             .IsRequired()
             .HasForeignKey<MedicalProfile>(p => p.Id)
             .OnDelete(DeleteBehavior.Cascade);
+
+
+        builder.HasMany(p => p.PatientPairs)
+            .WithOne(p => p.MedicalProfile)
+            .HasForeignKey(p => p.MedicalProfileId)
+            .HasPrincipalKey(p => p.Id)
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

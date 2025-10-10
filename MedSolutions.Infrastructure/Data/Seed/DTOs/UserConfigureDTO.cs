@@ -1,9 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using MedSolutions.Shared.Extensions;
 
 namespace MedSolutions.Infrastructure.Data.Seed.DTOs;
 
 public class UserConfigureDTO
 {
+    public Guid Id { get; set; } = GuidExtensions.NewSequentialGuid();
+
     [Required]
     [StringLength(100)]
     public required string FirstName { get; set; }

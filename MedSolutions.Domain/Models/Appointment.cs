@@ -7,15 +7,14 @@ namespace MedSolutions.Domain.Models;
 public class Appointment : VisibilityEntity
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
     [ForeignKey(nameof(MedicalProfile))]
-    public string MedicalProfileId { get; set; } = default!;
+    public Guid MedicalProfileId { get; set; } = default!;
     public MedicalProfile? MedicalProfile { get; set; }
 
     [ForeignKey(nameof(Patient))]
-    public int PatientId { get; set; }
+    public Guid PatientId { get; set; }
     public Patient? Patient { get; set; }
     public DateTime Date { get; set; }
 

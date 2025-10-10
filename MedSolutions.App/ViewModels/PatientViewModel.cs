@@ -1,16 +1,16 @@
 namespace MedSolutions.App.ViewModels;
 public class PatientViewModel
 {
-    public required int Id { get; set; }
-    public required string FirstName { get; set; }
-    public required string LastName { get; set; }
+    public Guid Id { get; set; }
+    public string FirstName { get; set; } = default!;
+    public string LastName { get; set; } = default!;
     public string? Patronymic { get; set; }
     public string? AMKA { get; set; }
     public string? PersonalIdNumber { get; set; }
-    public required Domain.Enums.Gender Gender { get; set; }
+    public Domain.Enums.Gender Gender { get; set; }
     public DateOnly? BirthDate { get; set; }
     public string? Address { get; set; }
-    public required string City { get; set; }
+    public string City { get; set; } = default!;
     public string? Zip { get; set; }
     public string? PhoneNumber { get; set; }
     public string? MobileNumber { get; set; }

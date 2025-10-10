@@ -138,7 +138,7 @@ public class AuthService(
 
         var claims = new List<Claim>
         {
-        new(JwtRegisteredClaimNames.Sub, user.Id),
+        new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
         new(JwtRegisteredClaimNames.Email, user.Email!),
         new(JwtRegisteredClaimNames.Name, user.FirstName),
         new(JwtRegisteredClaimNames.FamilyName, user.LastName)

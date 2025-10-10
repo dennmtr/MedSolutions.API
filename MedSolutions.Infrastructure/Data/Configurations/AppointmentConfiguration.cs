@@ -21,6 +21,18 @@ public class AppointmentConfiguration(DbProviderInfo dbProviderInfo) : IEntityTy
         builder.HasIndex(a => new { a.MedicalProfileId, a.State });
         builder.HasIndex(a => new { a.MedicalProfileId, a.Priority });
 
+        if (_dbProviderInfo.IsMySql())
+        {
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("UUID()");
+        }
+
+        //if (_dbProviderInfo.IsMsAccess())
+        //{
+        //    builder.Property(p => p.Id)
+        //        .HasDefaultValueSql("CREATEGUID()");
+        //}
+
         builder.Property(a => a.IsHidden)
             .HasDefaultValueSql("0")
             .ValueGeneratedOnAdd();

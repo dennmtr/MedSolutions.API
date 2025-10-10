@@ -27,5 +27,11 @@ public class UserConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeConfi
             builder.Property(p => p.Id)
                 .HasDefaultValueSql("UUID()");
         }
+
+        //if (_dbProviderInfo.IsMsAccess())
+        //{
+        //    builder.Property(p => p.Id)
+        //        .HasDefaultValueSql("CREATEGUID()");
+        //}
     }
 }

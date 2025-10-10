@@ -16,14 +16,14 @@ namespace MedSolutions.Infrastructure.Data.Seed;
 public class Seeder(
     MedSolutionsDbContext dbContext,
     UserManager<User> userManager,
-    RoleManager<IdentityRole> roleManager,
+    RoleManager<IdentityRole<Guid>> roleManager,
     IConfiguration config,
     ILogger<Seeder> logger,
     ILoggerFactory loggerFactory
     )
 {
     private readonly UserManager<User> _userManager = userManager;
-    private readonly RoleManager<IdentityRole> _roleManager = roleManager;
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager = roleManager;
     private readonly IConfiguration _config = config;
     private readonly ILogger<Seeder> _logger = logger;
     private readonly MedSolutionsDbContext _dbContext = dbContext;
@@ -33,142 +33,71 @@ public class Seeder(
     {
         if (await _dbContext.Users.AnyAsync())
         {
-
             _logger.SeedSkipped();
             return;
         }
 
-        await using Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction = await _dbContext.Database.BeginTransactionAsync();
+        using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
         try
         {
+            var locale = _config.GetValue<string>("Data:Seed:BogusLocale") ?? "en";
 
-            Mapper mapper = GetMapper(_loggerFactory);
-
-            UserConfigureDTO? initialUser = _config.GetSection("Data:Seed:InitialUser")
-                .Get<UserConfigureDTO>();
-
-            if (initialUser?.MedicalProfile is not null)
-            {
-                Validator.ValidateObject(
-                    initialUser.MedicalProfile,
-                    new ValidationContext(initialUser.MedicalProfile),
-                    validateAllProperties: true);
-                User user = mapper.Map<User>(initialUser);
-
-                IdentityResult result = await _userManager.CreateAsync(user, initialUser.Password);
-
-                if (result.Succeeded)
-                {
-                    string role = Enums.Role.Admin;
-                    if (!await _roleManager.RoleExistsAsync(role))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(role));
-                    }
-                    await _userManager.AddToRoleAsync(user, role);
-
-                    _logger.UserCreatedSuccessfully(user.UserName!, role);
-                }
-                else
-                {
-                    _logger.SeedFailed(string.Join(", ", result.Errors.Select(e => e.Description)));
-                }
-            }
-            else
-            {
-                _logger.UserConfigurationIsMissing();
-            }
-
-            string locale = _config.GetValue<string>("Data:Seed:BogusLocale") ?? "en";
-            List<Enums.MedicalSpecialty> medicalSpecialtyIds = await _dbContext.MedicalSpecialties
+            var medicalSpecialtyIds = await _dbContext.MedicalSpecialties
                 .Select(s => s.Id)
                 .ToListAsync();
 
-            List<User> fakeUsers = UserFaker.CreateFaker(medicalSpecialtyIds, locale)
-            .Generate(5);
-
-            foreach (User fakeUser in fakeUsers)
-            {
-                await _userManager
-            .CreateAsync(fakeUser, "123456");
-            }
-
-            _logger.ProfilesCreatedSuccessfully(fakeUsers.Count);
-
-            List<MedicalProfile> profiles = await _dbContext.MedicalProfiles
-            .Select(p => new MedicalProfile() {
-                Id = p.Id,
-                MedicalSpecialtyId = p.MedicalSpecialtyId
-            })
-            .ToListAsync();
-
-            List<AppointmentType> appointmentTypes = await _dbContext.AppointmentTypes
-            .Select(a => new AppointmentType() {
-                Id = a.Id,
-                MedicalSpecialtyId = a.MedicalSpecialtyId
-            })
-            .ToListAsync();
-
-            foreach (MedicalProfile? profile in profiles)
-            {
-                List<short> appointmentTypeIds = appointmentTypes
-                .Where(t => t.MedicalSpecialtyId == profile.MedicalSpecialtyId)
-                .Select(t => t.Id)
-                .ToList();
-
-                List<Patient> fakePatients = PatientFaker.CreateFaker(profile.Id, appointmentTypeIds, locale)
-                .Generate(50);
-                await _dbContext.Patients
-                .AddRangeAsync(fakePatients);
-            }
-            await _dbContext.SaveChangesAsync();
-
-            _logger.PatientsCreatedSuccessfully(fakeUsers.Count);
-
-            List<short> patientPairTypeIds = await _dbContext.PatientPairTypes
+            var patientPairTypeIds = await _dbContext.PatientPairTypes
                 .Select(p => p.Id)
                 .ToListAsync();
-            foreach (MedicalProfile? profile in profiles)
-            {
 
-                List<int> patientIds = await _dbContext.Patients
-                    .Where(p => p.MedicalProfileId == profile.Id)
-                    .Select(p => p.Id)
-                    .Take(20)
-                    .ToListAsync();
-
-                List<PatientPair> fakePatientPairs = PatientPairFaker
-                    .CreateFaker(profile.Id, patientIds, patientPairTypeIds, locale)
-                    .Generate(5);
-
-                fakePatientPairs.ForEach(p => p.Normalize());
-
-                var existingPairs = await _dbContext.PatientPairs
-                    .Select(p => new { p.PatientId, p.PairedPatientId })
-                    .ToListAsync();
-
-                HashSet<(int, int)> pairSet = new(
-                    existingPairs.Select(ep => (ep.PatientId, ep.PairedPatientId))
+            var appointmentTypes = await _dbContext.AppointmentTypes
+                .GroupBy(a => a.MedicalSpecialtyId)
+                .ToDictionaryAsync(
+                    g => (short)g.Key,
+                    g => g.Select(a => a.Id).ToList()
                 );
 
-                List<PatientPair> uniquePairs = new();
+            User? initialUser = default;
 
-                foreach (PatientPair p in fakePatientPairs)
-                {
-                    (int PatientId, int PairedPatientId) key = (p.PatientId, p.PairedPatientId);
+            var faker = UserFaker.CreateFaker(medicalSpecialtyIds, patientPairTypeIds, appointmentTypes, locale);
 
-                    if (pairSet.Add(key))
-                    {
-                        uniquePairs.Add(p);
-                    }
-                }
+            var fakeUsers = new List<User>();
 
+            var initialUserConfig = _config.GetSection("Data:Seed:InitialUser")
+                .Get<UserConfigureDTO>();
 
-                await _dbContext.PatientPairs.AddRangeAsync(uniquePairs);
-
+            if (initialUserConfig?.MedicalProfile is not null)
+            {
+                Validator.ValidateObject(
+                    initialUserConfig.MedicalProfile,
+                    new ValidationContext(initialUserConfig.MedicalProfile),
+                    validateAllProperties: true);
+                var mapper = GetMapper(_loggerFactory);
+                initialUser = mapper.Map<User>(initialUserConfig);
+                faker.Populate(initialUser);
+                fakeUsers.Add(initialUser);
             }
-            await _dbContext.SaveChangesAsync();
-            _logger.PairsCreatedSuccessfully(profiles.Count);
 
+            fakeUsers.AddRange(faker.Generate(5));
+
+            foreach (var user in fakeUsers)
+            {
+                var password = user.Email != initialUserConfig?.Email ? "123456" : initialUserConfig!.Password;
+                await _userManager.CreateAsync(user, password);
+            }
+
+            _logger.PairsCreatedSuccessfully(fakeUsers.Count);
+
+            if (initialUser != null)
+            {
+                string role = Enums.Role.Admin;
+                if (!await _roleManager.RoleExistsAsync(role))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole<Guid>(role));
+                }
+                await _userManager.AddToRoleAsync(initialUser, role);
+            }
         }
         catch (Exception ex)
         {
@@ -180,7 +109,6 @@ public class Seeder(
         await transaction.CommitAsync();
         _logger.SeedSucceeded();
     }
-
     private static Mapper GetMapper(ILoggerFactory loggerFactory)
     {
         MapperConfiguration config = new(cfg => {

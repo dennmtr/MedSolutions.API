@@ -31,6 +31,18 @@ public class PatientConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeCo
                 "LENGTH(PersonalIdNumber) = 12 OR PersonalIdNumber IS NULL"));
         }
 
+        if (_dbProviderInfo.IsMySql())
+        {
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("UUID()");
+        }
+
+        //if (_dbProviderInfo.IsMsAccess())
+        //{
+        //    builder.Property(p => p.Id)
+        //        .HasDefaultValueSql("CREATEGUID()");
+        //}
+
         builder.HasIndex(p => new { p.MedicalProfileId, p.LastName });
         builder.HasIndex(p => new { p.MedicalProfileId, p.LastNameLatin });
 

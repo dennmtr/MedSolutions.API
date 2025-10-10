@@ -1,8 +1,10 @@
 using MedSolutions.App.Interfaces;
 using MedSolutions.Domain.Models;
+using MedSolutions.Infrastructure.Common.Extensions;
 using MedSolutions.Infrastructure.Data.Configurations;
 using MedSolutions.Infrastructure.Data.Helpers;
 using MedSolutions.Infrastructure.Data.Interceptors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 namespace MedSolutions.Infrastructure.Data;
 
 public class MedSolutionsDbContext(DbContextOptions<MedSolutionsDbContext> options,
-        ICurrentMedicalProfileService currentMedicalProfileService) : IdentityDbContext<User>(options)
+        ICurrentMedicalProfileService currentMedicalProfileService) : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options)
 {
     public required DbSet<MedicalProfile> MedicalProfiles { get; set; }
     public required DbSet<MedicalSpecialty> MedicalSpecialties { get; set; }
@@ -19,14 +21,14 @@ public class MedSolutionsDbContext(DbContextOptions<MedSolutionsDbContext> optio
     public required DbSet<Appointment> Appointments { get; set; }
     public required DbSet<PatientPairType> PatientPairTypes { get; set; }
     public required DbSet<PatientPair> PatientPairs { get; set; }
-
-    public string? CurrentMedicalProfileId { get; } = currentMedicalProfileService.MedicalProfileId;
+    public Guid? CurrentMedicalProfileId { get; } = currentMedicalProfileService.MedicalProfileId;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(new UpdateTimestampsInterceptor());
         optionsBuilder.AddInterceptors(new PatientPairNormalizeInterceptor());
         optionsBuilder.AddInterceptors(new PatientSaveChangesInterceptor());
+        optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -34,6 +36,12 @@ public class MedSolutionsDbContext(DbContextOptions<MedSolutionsDbContext> optio
         base.OnModelCreating(builder);
 
         var dbProviderInfo = new DbProviderInfo(Database.ProviderName);
+
+        builder.ConfigureBaseEntity(dbProviderInfo);
+        builder.ConfigureBusinessEntity(dbProviderInfo);
+        builder.ConfigureSequentialGuids(dbProviderInfo);
+        builder.UseLowercaseGuids(dbProviderInfo);
+        builder.ConfigureCaseInsensitive(dbProviderInfo);
 
         builder.ApplyConfiguration(new UserConfiguration(dbProviderInfo));
         builder.ApplyConfiguration(new MedicalProfileConfiguration(dbProviderInfo));
@@ -43,9 +51,6 @@ public class MedSolutionsDbContext(DbContextOptions<MedSolutionsDbContext> optio
         builder.ApplyConfiguration(new AppointmentConfiguration(dbProviderInfo));
         builder.ApplyConfiguration(new PatientPairTypeConfiguration(dbProviderInfo));
         builder.ApplyConfiguration(new PatientPairConfiguration(dbProviderInfo));
-
-        BusinessEntityConfiguration.Apply(builder, dbProviderInfo);
-        BaseEntityConfiguration.Apply(builder, dbProviderInfo);
 
         builder.Entity<Patient>()
             .HasQueryFilter(p => p.MedicalProfileId == CurrentMedicalProfileId);

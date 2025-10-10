@@ -7,16 +7,15 @@ namespace MedSolutions.Domain.Models;
 public class PatientPair : BaseEntity
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     [ForeignKey(nameof(MedicalProfile))]
-    public string MedicalProfileId { get; set; } = default!;
+    public Guid MedicalProfileId { get; set; } = default!;
     public MedicalProfile? MedicalProfile { get; set; }
     [ForeignKey(nameof(Patient))]
-    public int PatientId { get; set; }
+    public Guid PatientId { get; set; }
     public Patient? Patient { get; set; }
     [ForeignKey(nameof(PairedPatient))]
-    public int PairedPatientId { get; set; }
+    public Guid PairedPatientId { get; set; }
     public Patient? PairedPatient { get; set; }
     [ForeignKey(nameof(PatientPairType))]
     public short PatientPairTypeId { get; set; } = 1;

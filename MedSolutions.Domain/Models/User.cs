@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MedSolutions.Domain.Models;
 
-public class User : IdentityUser
+public class User : IdentityUser<Guid>
 {
     [MaxLength(100)]
     public string FirstName { get; set; } = default!;
