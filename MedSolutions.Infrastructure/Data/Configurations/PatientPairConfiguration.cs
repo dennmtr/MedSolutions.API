@@ -1,4 +1,4 @@
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Infrastructure.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

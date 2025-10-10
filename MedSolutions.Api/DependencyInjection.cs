@@ -5,7 +5,7 @@ using MedSolutions.Api.Filters;
 using MedSolutions.Api.Services;
 using MedSolutions.App.Interfaces;
 using MedSolutions.App.Mapping;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Infrastructure.Data;
 using MedSolutions.Infrastructure.Data.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

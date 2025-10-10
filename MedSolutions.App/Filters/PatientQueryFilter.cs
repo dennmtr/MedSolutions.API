@@ -1,6 +1,6 @@
 using MedSolutions.App.Common.Models;
 using MedSolutions.App.Extensions;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 
 //?filter[rank][in]=1,41&filter[birthdate][gte]=1950-01-01&filter[birthdate][lte]=2005-01-01
 

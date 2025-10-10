@@ -1,5 +1,5 @@
 using Bogus;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Shared.Extensions;
 using BogusGender = Bogus.DataSets.Name.Gender;
 using Enums = MedSolutions.Domain.Enums;

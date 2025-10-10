@@ -1,5 +1,5 @@
 using MedSolutions.App.Common.Models;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 

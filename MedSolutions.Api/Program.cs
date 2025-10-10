@@ -63,23 +63,25 @@ if (app.Environment.IsDevelopment())
         // For development purposes only, drop and recreate the database to match the current model.
         // Remove this section if you plan to maintain migrations for schema updates.
 
-        await dbContext.Database.EnsureDeletedAsync();
-        logger.DatabaseDeleted();
-        await dbContext.Database.EnsureCreatedAsync();
-        logger.DatabaseCreated();
+        //await dbContext.Database.EnsureDeletedAsync();
+        //logger.DatabaseDeleted();
+        //await dbContext.Database.EnsureCreatedAsync();
+        //logger.DatabaseCreated();
     }
 
     await seeder.SeedAsync();
 }
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
-app.UseHttpsRedirection();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 if (app.Environment.IsProduction())
 {
     app.UseForwardedHeaders();
-
-
 }
 if (app.Environment.IsDevelopment())
 {

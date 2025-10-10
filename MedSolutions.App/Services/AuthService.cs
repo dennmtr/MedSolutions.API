@@ -5,7 +5,7 @@ using MedSolutions.App.Common.DTOs;
 using MedSolutions.App.Exceptions;
 using MedSolutions.App.Interfaces;
 using MedSolutions.App.Logging;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;

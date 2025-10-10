@@ -1,9 +1,9 @@
 using MedSolutions.App.Interfaces;
-using MedSolutions.Domain.Models;
-using MedSolutions.Infrastructure.Common.Extensions;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Infrastructure.Data.Configurations;
 using MedSolutions.Infrastructure.Data.Helpers;
 using MedSolutions.Infrastructure.Data.Interceptors;
+using MedSolutions.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

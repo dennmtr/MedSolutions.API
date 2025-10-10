@@ -1,6 +1,6 @@
 using AutoMapper;
 using MedSolutions.App.ViewModels;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 
 namespace MedSolutions.App.Mapping;
 

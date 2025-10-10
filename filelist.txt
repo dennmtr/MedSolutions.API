@@ -1,0 +1,1427 @@
+medsolutions.gr-api
+ ├── .editorconfig
+ ├─> .git
+ │   ├── COMMIT_EDITMSG
+ │   ├── config
+ │   ├── description
+ │   ├── FETCH_HEAD
+ │   ├── HEAD
+ │   ├─> hooks
+ │   │   ├── applypatch-msg.sample
+ │   │   ├── commit-msg.sample
+ │   │   ├── fsmonitor-watchman.sample
+ │   │   ├── post-update.sample
+ │   │   ├── pre-applypatch.sample
+ │   │   ├── pre-commit.sample
+ │   │   ├── pre-merge-commit.sample
+ │   │   ├── pre-push.sample
+ │   │   ├── pre-rebase.sample
+ │   │   ├── pre-receive.sample
+ │   │   ├── prepare-commit-msg.sample
+ │   │   ├── push-to-checkout.sample
+ │   │   ├── sendemail-validate.sample
+ │   │   └── update.sample
+ │   ├── index
+ │   ├─> info
+ │   │   └── exclude
+ │   ├─> logs
+ │   │   ├── HEAD
+ │   │   └─> refs
+ │   │       ├─> heads
+ │   │       │   ├─> feature
+ │   │       │   │   ├── auth
+ │   │       │   │   ├── patient
+ │   │       │   │   └── validation-and-errors
+ │   │       │   ├── main
+ │   │       │   └── stage
+ │   │       └─> remotes
+ │   │           └─> origin
+ │   │               ├─> feature
+ │   │               │   ├── auth
+ │   │               │   ├── patient
+ │   │               │   └── validation-and-errors
+ │   │               ├── HEAD
+ │   │               ├── main
+ │   │               └── stage
+ │   ├── ms-persist.xml
+ │   ├─> objects
+ │   │   ├─> 00
+ │   │   │   ├── 184db1a79278858a9c0551df4948baa3de296e
+ │   │   │   ├── 1dbd48bf95350e139bb8412b178b7c22c17f46
+ │   │   │   ├── 20daa0f811740af51e8918a96cde085e35c5f8
+ │   │   │   └── c18bc5055942360f6282f41f2c9e0942b05871
+ │   │   ├─> 02
+ │   │   │   ├── 55513bd018b672ad67886d33b95eacb2032b0e
+ │   │   │   ├── 675192864d6807fd6f869dc992a12b40e922be
+ │   │   │   └── abfd52ddf20367fe3bbcf84b20bfda85000d98
+ │   │   ├─> 03
+ │   │   │   ├── 42ea876335b5f3519cb19fd300cf2f0b233dc8
+ │   │   │   └── 4a3ad221f1a7e8ce8537df2c757bfb241b5af2
+ │   │   ├─> 04
+ │   │   │   ├── 1c7758d3ca90b47ee458b31ec9275a80f0db28
+ │   │   │   ├── adfe011c01eb587e138996503453bb7753a0e7
+ │   │   │   ├── af2e1bd3567e02c4e8dad7c22cab76ab4e7445
+ │   │   │   ├── e2cc257afb2de2a350b298fb276919bf770809
+ │   │   │   └── f74953134d46ace2520a59c1fabb37f47d7d2c
+ │   │   ├─> 06
+ │   │   │   └── e5121e0c0b6a86fd74e761cba07659194e5802
+ │   │   ├─> 07
+ │   │   │   └── c5dcacdf235851ecb29690ff2c3d45471d68de
+ │   │   ├─> 08
+ │   │   │   ├── 2ca7f52eeeda6c6924107de3ff730e6c5b5059
+ │   │   │   └── dc63b5314cbb3891507d869737d0452334373f
+ │   │   ├─> 09
+ │   │   │   └── cdb6ffd5b4ce04b3cf1ada812583b65d524c46
+ │   │   ├─> 0a
+ │   │   │   └── 57cd76d6e0de2af85e065826b24f6c3e9780a2
+ │   │   ├─> 0b
+ │   │   │   ├── 3a0fb04804bbd4ed0128e0a1635ea31cae5e16
+ │   │   │   └── ed5271bde9f4a701878dfd0f5ad94d49576d69
+ │   │   ├─> 0c
+ │   │   │   ├── 1a813a8f394029d70c7fff7b843c4c038712f3
+ │   │   │   └── f22c80e3b14fa8721c5b9d9313bbccd8422d7b
+ │   │   ├─> 0d
+ │   │   │   ├── 24ff45aeb62ae4cab863425cb8e72dac6501c1
+ │   │   │   ├── 3815d31e8c6e41034c033748daea5a42532844
+ │   │   │   └── 85156f0f5816c428f0d4e385c63585a6c19d1b
+ │   │   ├─> 0e
+ │   │   │   └── fbc927f17046a14944d34f7f1d7d00ad013e1c
+ │   │   ├─> 0f
+ │   │   │   └── babaf2347ac1ab37ebe514ab3668926bad8a4a
+ │   │   ├─> 10
+ │   │   │   └── 69abd4a740195b7c9c6404748ddea69977c657
+ │   │   ├─> 11
+ │   │   │   └── be2803cddbe17095e9ccd8965a1be7a16331fc
+ │   │   ├─> 12
+ │   │   │   ├── 0080bd403a0ac6a128a41dc95b779375dfd96e
+ │   │   │   ├── 4d7cf2541d6699c4abdf858bb86e0ff43f40fb
+ │   │   │   └── 5ceb935e315647d0a71aac6fe0384c7a8b21b8
+ │   │   ├─> 13
+ │   │   │   ├── 66e37d7a5409f348574ddce4fb1cef1f593ba6
+ │   │   │   └── bf232d7afc1fefd77cac5a7baa8c906b9bfe06
+ │   │   ├─> 14
+ │   │   │   └── d1d1b9e612500d4d9bb95d36a4a008bbbefd57
+ │   │   ├─> 15
+ │   │   │   └── a8dbc80c910005c63c2384b2f94585ced24f94
+ │   │   ├─> 16
+ │   │   │   ├── 393d8b5940404e19ce072a097e50fbb00675bd
+ │   │   │   └── 81a834111977524ef642edbd6c61ebd0801543
+ │   │   ├─> 17
+ │   │   │   ├── 6c5c6bab75e33f2804270f44bfacec0b32705d
+ │   │   │   └── f580e6540ac78ad46ec2d828c5d72afc8ad693
+ │   │   ├─> 18
+ │   │   │   ├── 19422f8dbb05252a7d284318f79e7c76d17516
+ │   │   │   └── 6050b28dafb98cfdff0f74e6ef42113765aa5b
+ │   │   ├─> 19
+ │   │   │   ├── 55f246f720abf35dd9f5203f35c8c52a63bd33
+ │   │   │   └── af6a3e2a076f83ac86f92b9077e3e5659ea845
+ │   │   ├─> 1a
+ │   │   │   ├── 99cbb1d3d2f38e942d132e759c83589681c963
+ │   │   │   ├── a8ad55a09674cc73df3a026805a9df9c87488e
+ │   │   │   ├── afc3f6ff474dbf840d1e61ba8ddd8d188feca2
+ │   │   │   └── f40088613dff50daa82537f88ae465cb0c0d45
+ │   │   ├─> 1b
+ │   │   │   └── 12837b78436b1897e50f62a617b75a4856cbcb
+ │   │   ├─> 1c
+ │   │   │   ├── 3ec3f969a99b01e5a0e7d65417a784d9e88817
+ │   │   │   ├── 4b89c2db547b2daa69480bdaa758637b5bd25d
+ │   │   │   └── af41209528d011cff04b587112de07e4daae87
+ │   │   ├─> 1d
+ │   │   │   ├── 009711c948705508f1c0ad6861b0fadb3b22f8
+ │   │   │   ├── 084d6385f082de8c7ae2796f244642db807961
+ │   │   │   ├── 589257702c615ddd37f0d4d03ebc1ba980672f
+ │   │   │   ├── 631162fee21fc2576e0d36812f8347226614f1
+ │   │   │   ├── c614c2d64a64053fcd2e013abae0979e7b2a3c
+ │   │   │   └── f87deb26059512142abb65dd7ccd22b2450226
+ │   │   ├─> 1e
+ │   │   │   └── 84d38c98463e26d3a7eedf0fb8bf75a7d21df9
+ │   │   ├─> 1f
+ │   │   │   └── 12748b624f4c21f9a453d631a127d02b1f5d6c
+ │   │   ├─> 20
+ │   │   │   ├── 37808afd18282852716b3250d7bca3ceb0382b
+ │   │   │   ├── 44da2a83d7fde8a85e0852d8a09baac989484b
+ │   │   │   └── a1faf05ef5b7e8bc8d92b2e01185b78ab01727
+ │   │   ├─> 21
+ │   │   │   ├── aae87c2c36bcd5b8da87d4bccd449f8e3d2357
+ │   │   │   └── e1d78367d8bd76fcbf4c74a9b9dca893cdd235
+ │   │   ├─> 22
+ │   │   │   ├── 7f1bcae59d8d91707fb7f626547f9836f099f4
+ │   │   │   └── ceaef7ca5b5df10ad1fadfa376ee8809c6c3ca
+ │   │   ├─> 23
+ │   │   │   ├── 8720ecc24cc9fbcfe3f7f367e38acbecfeac86
+ │   │   │   └── 9613b73fa3546d1b059ddf2f99e028dadf3904
+ │   │   ├─> 24
+ │   │   │   └── 65f6fc318924fca869d425798c40e004c45fe8
+ │   │   ├─> 26
+ │   │   │   └── d9d240b8fd531a4fe5a4e34a164b3d1cd02dd2
+ │   │   ├─> 27
+ │   │   │   └── d0a34dadf6a4cd09ae393a49e1899d04e9a6b1
+ │   │   ├─> 28
+ │   │   │   ├── 56a2ce9716832df544a674978c971751ac77e4
+ │   │   │   └── e81fd0259a061bdaa5204374e8de67c7b40f2e
+ │   │   ├─> 29
+ │   │   │   └── 401ed8ef737da196e92bdfc97ac0fc56c14866
+ │   │   ├─> 2a
+ │   │   │   ├── 8ab34a4b7b4a566407e9da4746e268ffcb6dfa
+ │   │   │   └── 998ddfc474cc49ac62a6f20b98ad721d8ba68f
+ │   │   ├─> 2b
+ │   │   │   ├── 3e54e3c38a941f88cf0c1e806836d2d4803129
+ │   │   │   └── 81b067a732d63b8263dc8c0cb5c3b7926dcc74
+ │   │   ├─> 2c
+ │   │   │   ├── 432b47577edc9203fc3e2e1d2defab311e8d3b
+ │   │   │   └── dd62937eca524301f1664ef9a8b6adf33f1808
+ │   │   ├─> 2e
+ │   │   │   └── 47ef05a3d50ce5f2397514406779a57884f1da
+ │   │   ├─> 2f
+ │   │   │   ├── 434079171f00143bf4a04bec78de3c96b646ab
+ │   │   │   ├── 900d6f328c3971670e36ad794df59cf49dfe23
+ │   │   │   └── f8c4e46e01b9cdf500edbae191ded641610a80
+ │   │   ├─> 31
+ │   │   │   ├── 93abbe19983ad49e2352e2ccef59b5f30e8bdd
+ │   │   │   └── 9b4a3af5b880f64ca0dca08efb01c89eee101e
+ │   │   ├─> 32
+ │   │   │   ├── 1332e88ad062029e551ee1d60816f79a4a98f7
+ │   │   │   └── 898ab1e2736d54c54d6566915d70741b84173c
+ │   │   ├─> 33
+ │   │   │   ├── 6c541dfb97b3ca38065eb13d20a222361a0b75
+ │   │   │   ├── ab199a15535edec7f3652a1b7f56f9fecd52f1
+ │   │   │   └── abdf678b042d463c0da590162c901d8bd8cef8
+ │   │   ├─> 34
+ │   │   │   ├── 21e073474570ce8d872b2e2c0a0831ce168ef3
+ │   │   │   ├── 88856782d4b675831287f6ba46e9cd760e88b2
+ │   │   │   └── 8bdb00e81f3171c0d2bfc8d9e657951a784365
+ │   │   ├─> 35
+ │   │   │   └── 49ffca68cf623a210890e663da8adfb317b6a4
+ │   │   ├─> 36
+ │   │   │   ├── 244d156a69462657ffdcd7946883789737477f
+ │   │   │   ├── a3bf65d653d700bee55b44bbf41a4248dd6f90
+ │   │   │   ├── a45d82f1e2aa6c57ebcfc986bcd25cce340b36
+ │   │   │   └── c6f658891a41f814bb454cf11a07dc0a371481
+ │   │   ├─> 37
+ │   │   │   ├── 0248571343a097f4cfd485bfe26fbeacfeba79
+ │   │   │   └── 86b261e8e78039403230355851ce98c57640ec
+ │   │   ├─> 38
+ │   │   │   └── 00e66397b7f53314ed9ee941e53f8ad3c496e6
+ │   │   ├─> 39
+ │   │   │   └── 04c51c3c247f51037921c11dcbcc62db1eabe7
+ │   │   ├─> 3a
+ │   │   │   └── 031bf6a411f9374dcd83f5fc7ec3f0aeb39897
+ │   │   ├─> 3b
+ │   │   │   ├── 8afaa289b08c798e2389ece62e24391d1f79d0
+ │   │   │   └── d937d288a4ada2693c3e0f69601c27c48f194f
+ │   │   ├─> 3d
+ │   │   │   ├── 3fb234ea083d4fc3a3edcb5e980c19483b287b
+ │   │   │   ├── 8063185831197939cf2ed0a25175f0d5233e73
+ │   │   │   ├── a2488b5a6e4d4a24bf0b259b92b9760ee4dc63
+ │   │   │   └── ca4d3cfa2a9696c5ee9893a4ca17c55c9ddc9d
+ │   │   ├─> 3e
+ │   │   │   ├── 475aab8a34784c9ceb325b847042696816b75d
+ │   │   │   └── 62a516d6e452e6c4ea0642ffbd719e7e6501c5
+ │   │   ├─> 3f
+ │   │   │   └── 732137b8c4fab6579c220bc17b5da65ca0e254
+ │   │   ├─> 40
+ │   │   │   ├── 9fb199f1ce8b719dcc39271a1747e562e66422
+ │   │   │   └── b57f788fbce63c273e2f0a3226d83f29d2ce40
+ │   │   ├─> 41
+ │   │   │   ├── 1b198fc06529da7a812ea68f290b32bdd08375
+ │   │   │   └── b3e45bc2ca450bc209ecfab1f346084b8a11e7
+ │   │   ├─> 42
+ │   │   │   ├── bf0127668bcb16f70f11e0cb6eaad31c4a9c5f
+ │   │   │   └── ddd7bae86d7af4bf421539c058475d721bf57e
+ │   │   ├─> 44
+ │   │   │   ├── 428be314e3ebdc7dd3d0cb80291ee2ace887e0
+ │   │   │   ├── 61b926f39866dbef686c5cdc620a959aa00cb5
+ │   │   │   ├── 88f401ab795e6f24428152927156c4a9020979
+ │   │   │   └── d3c207e5195c3668c5396bed37a413d19fec47
+ │   │   ├─> 45
+ │   │   │   ├── b2d90afade04287dd32a0ba1fb25f5f07a44bf
+ │   │   │   └── e1c37360517a2b23260d27c30b5d635d58627e
+ │   │   ├─> 46
+ │   │   │   ├── 44000e80ff31b3a3ec0f635c23475d7e688060
+ │   │   │   ├── 7a4207f39a5b7ed208b80cb55f4effa79f9c83
+ │   │   │   ├── 7b7d951c87c4012f6b5fcd6ef79b6d607dfae6
+ │   │   │   └── bd2e877cc02106db7815945fb198ca459287fe
+ │   │   ├─> 47
+ │   │   │   ├── 285d577e1236fc51e4209757d7d71bfd8db9fd
+ │   │   │   ├── 2aa641a91e4a48ba99327f62d4974b1e854d10
+ │   │   │   ├── 6e0e31a0e7d7d12660d590e5a08ef8d405540e
+ │   │   │   └── 854198f6942d9585dfcb295b872173d01316c5
+ │   │   ├─> 48
+ │   │   │   └── b6fc115aca9044f7740a12b87757f17e6c24a4
+ │   │   ├─> 49
+ │   │   │   └── c35e0d61e4f93ec2aa804bd458311370ca6a3f
+ │   │   ├─> 4a
+ │   │   │   ├── 7e0b77ffe61e1fb227470a721e5919697e31c5
+ │   │   │   ├── 83af478a550ca4f2b32956777f919d073ad4a4
+ │   │   │   ├── aa2fd32b4c0ed90a84296038d81d78d4eb4121
+ │   │   │   ├── c951a52625bdb5c2eb6cb396ce36b70bf64e59
+ │   │   │   └── e6df531116f82ab95564ff44b68463676e7fee
+ │   │   ├─> 4c
+ │   │   │   └── fb58511f2beae6cb732c0c0ecad89098a0a8ba
+ │   │   ├─> 4e
+ │   │   │   └── 1a91b288c4494fb45a31fc29612e36cbd20c04
+ │   │   ├─> 4f
+ │   │   │   └── 626a8b797d92b0c873131ee7e431f8c0081bf3
+ │   │   ├─> 50
+ │   │   │   ├── 0b8c48d7669e0fda89413f7eea8b278fcb0d1d
+ │   │   │   └── 6bd27d7da131bb0c53d3ae8b36d4898b96c4be
+ │   │   ├─> 51
+ │   │   │   ├── 9a90b8d0e66fe81ad4519e826dba54b41f84f1
+ │   │   │   └── 9c30fdbc0291b095d0a7b786ccbc094ef6a6ad
+ │   │   ├─> 52
+ │   │   │   ├── 586db9b8302eefd1ddc027c50d8830cf45a2b3
+ │   │   │   └── 590bb361cc74411d4503c0461535c6b778b908
+ │   │   ├─> 53
+ │   │   │   └── 0b1237a72958eea96929335591cc2e64abe5c1
+ │   │   ├─> 56
+ │   │   │   ├── c276145a6be5b0320413a9cde7ae18a1f6918e
+ │   │   │   └── cab5419133dc740358eba93d1e6a26f11adf37
+ │   │   ├─> 58
+ │   │   │   ├── 168c7ecf1bd27f7ea96215a429014f3cfd9451
+ │   │   │   ├── 2ec7e97acb4c8d9240e7ba5d2e691b27883f3f
+ │   │   │   └── 8e493668e2c5e92f18aeca55dfa8c1d75140ee
+ │   │   ├─> 5a
+ │   │   │   └── 8a8813133acd9bb3534ad6612e237c01f5457e
+ │   │   ├─> 5c
+ │   │   │   └── 76baa66f50be4f2d910db3c24fa58af5e02b1f
+ │   │   ├─> 5e
+ │   │   │   └── df6db80549c772cbcfb47fd7c006ae7cfcef44
+ │   │   ├─> 5f
+ │   │   │   ├── 592f7914a31d3993c9bd5ff8767b559eadf0aa
+ │   │   │   └── 8a7815d92b9e1b17c04118430fa270a3b7dac7
+ │   │   ├─> 60
+ │   │   │   └── 751c1631a4b2e18223a2a31c5c0a33c2082835
+ │   │   ├─> 61
+ │   │   │   └── d56cc92861c85579d8604447b9fbd5083f1f93
+ │   │   ├─> 62
+ │   │   │   └── b3f45c6da50a6bf25470db75aae2515431db0a
+ │   │   ├─> 63
+ │   │   │   ├── 13b56c57848efce05faa7aa7e901ccfc2886ea
+ │   │   │   └── 411dc54c82888547f01abfbf7297be10562165
+ │   │   ├─> 64
+ │   │   │   ├── 0de1950f1238d0b425ecdbc86a6f322fbf4727
+ │   │   │   ├── b03d0b408ec003a80732a55892df18ecb503db
+ │   │   │   └── b25ea36bb375106134044609cfb2d861885e26
+ │   │   ├─> 65
+ │   │   │   ├── 2881d902fa55c3ddd0d9825d3560e97c132e29
+ │   │   │   ├── 5f6aaf9ed9911f5e74c8bc2c357d750855169b
+ │   │   │   ├── ba230975001cb69036e53800c735e2b3c188df
+ │   │   │   ├── d927c22f1ddd3573bd7fd1aec6c8d300d425fe
+ │   │   │   └── da0c86f2908fbc188cfbd14892df29e1844f37
+ │   │   ├─> 66
+ │   │   │   └── 36318bafd7f220d29e89f6f2c34aac414ba232
+ │   │   ├─> 67
+ │   │   │   ├── 3270395470bcdc01615307f09244d5b565ce36
+ │   │   │   ├── 5d888e3386181787d075b4698be5eb1ad3ac53
+ │   │   │   ├── 765db26c7394c69d2c5a4f43850c0a55d1a16f
+ │   │   │   └── 7e26378f133fa7693a7f6fa8e59acfc6f6c589
+ │   │   ├─> 68
+ │   │   │   ├── 2ddd129e51d649b7adeeff7887a0bee1d4abbb
+ │   │   │   ├── ab3187ffe8368fc1fa63779a37c3b6ef898ed5
+ │   │   │   └── c19c2a8b095388cf49f59ced708cb960e063ff
+ │   │   ├─> 6a
+ │   │   │   ├── 10f340bc03fb55f090cab530e302a0e666b421
+ │   │   │   ├── 57b39dfcdf5c0a6c5c5e83a184d38939157be9
+ │   │   │   ├── a26ee162b34ec6070a642ace95b1b431f370f0
+ │   │   │   └── e165048701f4ded41e9cc93d0a96be82521cba
+ │   │   ├─> 6b
+ │   │   │   ├── 6861b2ca5ba96514b5035bc250c1b83a359efa
+ │   │   │   └── a764dceb40c356eca3693600996a8be8a2e68c
+ │   │   ├─> 6c
+ │   │   │   └── 73831b34d0da849eef1ff089f530057a072e96
+ │   │   ├─> 6d
+ │   │   │   └── bd312719314612a6126876dfff844d2c6aad30
+ │   │   ├─> 6e
+ │   │   │   ├── 80663ec3fda17b0793675023189a1ff20f8bc3
+ │   │   │   ├── 91c18ac1a78a8094596c6f5af2ec9eccf722d5
+ │   │   │   ├── 9ce20db4ab544df135e1b43c66f93512cd19b3
+ │   │   │   └── ebebd84fb53e3eddf4e3d1ebaa2f8af7c35833
+ │   │   ├─> 6f
+ │   │   │   ├── 189e2e51720486ad61df64f83f0c6631dbdffc
+ │   │   │   ├── 3521e8db797903605fa2d16d2b86b65a036768
+ │   │   │   ├── 936b5901c7e1667a3a4156abbf9f9655d89d34
+ │   │   │   ├── c0f40b97a4857acd621bf704cee121087d2899
+ │   │   │   ├── dcffde26363f917e7b41a7908c190a156f1e20
+ │   │   │   └── f262df6b44e2476b8266d04547e27887c805cb
+ │   │   ├─> 70
+ │   │   │   └── 3fbbe42702ff3017ccfd6eb7bb118edff998fa
+ │   │   ├─> 71
+ │   │   │   └── e008a650917d7bd22f4844c68ee518a130a75d
+ │   │   ├─> 72
+ │   │   │   ├── 4612990f05697b59db42067e76a901550af941
+ │   │   │   └── 88069d7d8468b32d945fc9cf5b6e22a1a8680e
+ │   │   ├─> 73
+ │   │   │   └── a3295f29d022a23e000e6ca815af6519879c6f
+ │   │   ├─> 74
+ │   │   │   └── 247c87c451e6c2fedb51644e279d4c1074d5ae
+ │   │   ├─> 75
+ │   │   │   ├── 12b1d6ec344b6565c44870c2c87874f61eae29
+ │   │   │   ├── 1371ff95d527af413d84fe0db6a7cb6b1ceda3
+ │   │   │   ├── 7da75ca823b612bbb0aa41540ad491c0830805
+ │   │   │   └── a6c21b936aaba7ef6f63de8bdd4e1c1b66a6bf
+ │   │   ├─> 76
+ │   │   │   ├── 6ccef8aaec0bca25d1ef9d42d4933dcf04de3f
+ │   │   │   └── c5b44f6b7456faeb710a49dc73ed4cbe07a281
+ │   │   ├─> 77
+ │   │   │   └── ec311834864cbfbe42d37bb0e5596e865198b7
+ │   │   ├─> 78
+ │   │   │   └── 37b8b1385f35ab530a6b0607c905dd61d430e8
+ │   │   ├─> 79
+ │   │   │   ├── 5313813e28523200f52f9503fcab3a9dfca046
+ │   │   │   └── 9082526c4fe13970694519e3103e1b2d3dc53b
+ │   │   ├─> 7a
+ │   │   │   └── 013199de77cc02f5412b2cb4d9820ffcb4e561
+ │   │   ├─> 7b
+ │   │   │   └── 879e037cc7962e24b63720a6eca9a06c17cc1f
+ │   │   ├─> 7c
+ │   │   │   ├── 75ac39b296508dd04fdd71867ffb6e8aabd0c1
+ │   │   │   ├── a75f26ec6276326408cea02473ca3251e1fb81
+ │   │   │   ├── bbfb7b072c277175c9b16797da550e59273fc5
+ │   │   │   └── fc3538cea9387ed70b6b515055490f9ccde5ef
+ │   │   ├─> 7d
+ │   │   │   ├── 5d59232b922745d5896e02dad4e4b4e0165359
+ │   │   │   ├── cc2281611206b2399a708245bf4381c4455d84
+ │   │   │   └── fa6c5a7c698a914d074982ba1b8a1d420588b5
+ │   │   ├─> 7e
+ │   │   │   └── 7ffd70fe369d667a761df0fcb961117eb8d18b
+ │   │   ├─> 7f
+ │   │   │   ├── 63ac1a1e08a9a0210e7295810b335e02b4a55d
+ │   │   │   ├── 79e0e1746954db525124ba784721c760e4f08a
+ │   │   │   └── a3bce19dc721c2b4865b4670d3bc00a15148a3
+ │   │   ├─> 80
+ │   │   │   ├── 2e4dd71716ee2493ed212395d3851c7ac3a9e7
+ │   │   │   ├── 3300952dbc09ccdcf3e9848528c35722922529
+ │   │   │   ├── bd8df585ccc2e80e46c680fc049ab35d7654aa
+ │   │   │   └── fa725eb71391b188c9c513d6d19fda36e03e9a
+ │   │   ├─> 82
+ │   │   │   ├── 5c6b339c00700e3fd147619c2b5cc8dbb2e3c5
+ │   │   │   └── fdda5fef3d9e417f6a03b81c4f6a2a8b428475
+ │   │   ├─> 83
+ │   │   │   └── 30c31cb03a13c188ecc27a6eaadd90558d36b2
+ │   │   ├─> 85
+ │   │   │   └── 10c81ec1d467fc187d71c2643f5a6979c460f8
+ │   │   ├─> 86
+ │   │   │   ├── 2b8c9ac8c311f751402852df81cfce6865f07a
+ │   │   │   ├── b28d70bee4bb86e7e1d9b81851bb1f5cb88c3e
+ │   │   │   └── ee05b98fd14b2713c9f766c36d7d422fb502c9
+ │   │   ├─> 87
+ │   │   │   ├── 865f375840d6708ee2de78d08066176545d934
+ │   │   │   └── dbc30fceb24951543820dfdef30192b850b88c
+ │   │   ├─> 88
+ │   │   │   ├── 2381a7c65a4d6807b0c780b28b099a5dadc4ec
+ │   │   │   └── bffa7dca3977eb63df4c6be7df38fd1a2c8a2b
+ │   │   ├─> 89
+ │   │   │   ├── 9fc8ed0657e319ef3a441dad070a7475b8e1c0
+ │   │   │   └── c9d5438e77057aabf68c2b62b7a5da0c4cdee6
+ │   │   ├─> 8a
+ │   │   │   └── 1c56e9d546074e80db2e5c91beb9c7adbac209
+ │   │   ├─> 8b
+ │   │   │   ├── d1ab0d4fa229d7494e6f374f3e3e2cedada75d
+ │   │   │   └── f0908e44bcd4452ba82cbd015a2d156e44c250
+ │   │   ├─> 8d
+ │   │   │   ├── 3bfb5dba3795ea0a6d9869ae0b7d720fe6da17
+ │   │   │   └── a8fbe4fab2d2c4b450f2770e1ea34133ab4840
+ │   │   ├─> 8e
+ │   │   │   ├── 109133b9c0cc2eecfd8cd87b2140ce5450f881
+ │   │   │   └── 18389de118237a9c4817663c4d77c87ef60b94
+ │   │   ├─> 8f
+ │   │   │   └── 11602c7b03730166c8185c17798e8e1b397602
+ │   │   ├─> 91
+ │   │   │   ├── 1354e046f675b8771f9269b60a4310d75a59a6
+ │   │   │   ├── 2abc000e197930ac0c5fda1839205a5ccd45a7
+ │   │   │   ├── 3a342d4024fbde7847cbf0f5995b6d9314ec7e
+ │   │   │   ├── 4ab82f6085a47c2eef64147b4f8f1c5935299f
+ │   │   │   └── 8ad882620bf8abc216f2937fc350bcae665b0c
+ │   │   ├─> 93
+ │   │   │   └── bcc1eb0ce44b89a8b51ae14dceaa9018d49cc1
+ │   │   ├─> 94
+ │   │   │   ├── 1f5ceb020b28f6e1aafbd5f1f8096789a94ad7
+ │   │   │   ├── 2f0bbb04c10bc95e587daa53ca115004835a54
+ │   │   │   ├── 9561d21863b8afb97aec8134df51d9b9c73c1c
+ │   │   │   └── ab6489c020c13907c6012a8ca44f8c7e5dded5
+ │   │   ├─> 95
+ │   │   │   └── d185707790cd5a156784b5c62f14f603248750
+ │   │   ├─> 96
+ │   │   │   └── 723f1dcf5abdedc0b5e959b8bb915467f89e0e
+ │   │   ├─> 97
+ │   │   │   ├── 08cbe433dbecf4c27c06ccf9a736f80381ddd3
+ │   │   │   └── 3acd52f00d449f5175d00789fdfcd73224dc0c
+ │   │   ├─> 98
+ │   │   │   └── df0a6a35549217224855c5e47c87cbd7917163
+ │   │   ├─> 99
+ │   │   │   ├── 1d227bee0938951a080a3b17d3e2f887fec6c6
+ │   │   │   └── 4def417864d9013a500a3c598a6c1695a793b9
+ │   │   ├─> 9a
+ │   │   │   └── 38ff5d81c13b66377a2d7fd23eb17065334a50
+ │   │   ├─> 9b
+ │   │   │   ├── 338a5296dbfe2410da5ef2c5128c5f481e6f77
+ │   │   │   └── df095bd3e9b8e9f6302c26842269df673eb2d4
+ │   │   ├─> 9c
+ │   │   │   ├── a105961b13bf2309139344d4e6fa4dbadd4a23
+ │   │   │   └── b846ac67b5b0e5ff89ead0f63325a7b5c3413d
+ │   │   ├─> 9d
+ │   │   │   └── 650fe1de8da31339e12c3955407b3b55f3683c
+ │   │   ├─> 9e
+ │   │   │   ├── 4fd1c93d420408ca21e0f92d03e9c8f3dfe740
+ │   │   │   ├── 5cb74108c985e1b730f4ad43774c0f874f8682
+ │   │   │   ├── 64e309927e8ab4f49a44ac317b5f403aeea165
+ │   │   │   ├── 67df1d4031c398278e1eea76d8080008f1fcdb
+ │   │   │   ├── 761c7e72b1a98d8410979aad6e3fa933fa88e6
+ │   │   │   └── e83a888156c23953c3abf5d87644888e30e379
+ │   │   ├─> 9f
+ │   │   │   ├── 75591cfb90596f5b42465e282040af8f97cce9
+ │   │   │   └── ed7d8dc05c49857892987c869819ad36c3c585
+ │   │   ├─> a0
+ │   │   │   ├── 7ff80fc82959788cca99e1760bcbb28ab46f8c
+ │   │   │   ├── d137df77885c37af23f9089171a2a86509c70e
+ │   │   │   └── f01178d4f2317064f5f7dc3c5d5c8e175398ad
+ │   │   ├─> a2
+ │   │   │   └── daffeb6dc7c769c9c7cfdd5dec3f33b639d14d
+ │   │   ├─> a4
+ │   │   │   ├── 405dd6fd0fa6fc559ab0097ebde67377b29545
+ │   │   │   ├── 536409fae3c00f0f0bfeda75cfd3c04a00a005
+ │   │   │   ├── 73bfe02fd7360578ae9cb6ef15b0f5c159e18e
+ │   │   │   └── a0ba4c5b77feaa245e80b459a961c400ce0afe
+ │   │   ├─> a5
+ │   │   │   ├── 164e08d0f61345fc2e01102946251f7723185c
+ │   │   │   └── 8174adf83922d9f3ad8ff6a602b1fb149c6e12
+ │   │   ├─> a6
+ │   │   │   ├── 14bb73ea003bf4b4b5da01e10686b074ab5c31
+ │   │   │   ├── 5d53ab7f865e0b16c50975b15dffa4f9db0d99
+ │   │   │   └── ee965fadbd1f54fd079a19076fa986adb78d17
+ │   │   ├─> a7
+ │   │   │   ├── 6c7b7d5992e86f607adf04dcd4b0a3b0e6bedd
+ │   │   │   └── b8bbee1b28b4ecb6898523aa130bd901e09ce7
+ │   │   ├─> a8
+ │   │   │   ├── 340e8cd241f11f2c054eb983b470539f4357ba
+ │   │   │   └── bc81adade380a6a17f2e6a64474316147a1b50
+ │   │   ├─> a9
+ │   │   │   └── e4fb5e1df6b0da4b58d69b6a8eba4559111359
+ │   │   ├─> aa
+ │   │   │   ├── 0d1e4eda3b80cd8b62f3e8e61be674abbbb878
+ │   │   │   ├── 1b5cab9036d4ff361b675fae53bafe34c1097d
+ │   │   │   ├── 39c81dabf3fd3f23e2a986d14bf2c17c65232c
+ │   │   │   ├── 57a5a039631fddf65e64a761b4a2ad9a1dea4b
+ │   │   │   ├── 7934c80a65cb2aa6025a68543b027495e3f2c2
+ │   │   │   ├── 820b58ee49696ffc84f42daf1703debad0d6c8
+ │   │   │   └── af74f61562fd9ff58c874b3d0bbcc6b6603b88
+ │   │   ├─> ab
+ │   │   │   └── 5b16cc790c0fedb3964007a5b485238ee0f912
+ │   │   ├─> ac
+ │   │   │   ├── 23431bb281d61665ef850d13d6e5cab9d7fb17
+ │   │   │   └── 8b7dba9bc9581ed4fdbf0d94e2844844a7d791
+ │   │   ├─> ad
+ │   │   │   └── 119c907ee0ededec24fd2a6e4c009d63c867d5
+ │   │   ├─> ae
+ │   │   │   └── 40a5e53c42caa07694434d330526d76f511cd5
+ │   │   ├─> b0
+ │   │   │   └── 5851a61dadf7d0c95101e75501371baddd75db
+ │   │   ├─> b1
+ │   │   │   ├── 14b4e104e6aa8b296744c79d153140bd7beaca
+ │   │   │   ├── 1fbb070d90af82837515acd0340eaa8ff8713d
+ │   │   │   ├── b969608b14784604403435eeeab8e5fbe37407
+ │   │   │   └── dfdda3bf4189574f53df2f52b2bf3f6920aba8
+ │   │   ├─> b2
+ │   │   │   ├── 28a3dc650bab07254aa8bc6dca7e61591c41ea
+ │   │   │   ├── 84aa773326c9d73bfee535d59d4212654e7e1a
+ │   │   │   └── c656de5b694883f1178852d22f1968c14945cd
+ │   │   ├─> b3
+ │   │   │   ├── 44fc48d7ec8e534091caed86a58277421dfc58
+ │   │   │   ├── 78ff385cdc91af5b7793087b86018a4a24eadd
+ │   │   │   ├── 9f2a97fb23b1646ab8f3a80ace19cb02f9aad2
+ │   │   │   └── ebf78a298bb3427faf5c0300ed3f3bee4688c0
+ │   │   ├─> b4
+ │   │   │   └── 95ff9bccae90b251d3a8e838c7fee0586df964
+ │   │   ├─> b5
+ │   │   │   └── b97b0f6e2e1ec740f327ae32841ffc0473c6d7
+ │   │   ├─> b6
+ │   │   │   ├── 6eba7da9a7dff97aab0ed974915533957e94e5
+ │   │   │   └── ffd97a746538b3d5a5efb8a564aa77df35c2ae
+ │   │   ├─> b7
+ │   │   │   ├── b630221b0686e1e77900a9bc12ae00504ab1f0
+ │   │   │   └── d26ba353ec5c3cc48819ed0f3ebf2568616cfb
+ │   │   ├─> b8
+ │   │   │   ├── 234ebfd87b079cdb1438bfb39929797feb389b
+ │   │   │   ├── 8390b47c34d6edce8cbe914290bb9d4768f22f
+ │   │   │   └── c52e4b432654eec08794263b29fe481bd23a00
+ │   │   ├─> b9
+ │   │   │   ├── 2123745011b9cac7fa9a620699e1b472c799f1
+ │   │   │   ├── 2f74d56ff03bf78d7ce93f7270c9405541bfb6
+ │   │   │   ├── 988c04f11288737a252b7d0134a2425868d090
+ │   │   │   ├── aed3a3fc2b201825a10a5308c17937cd6be4c7
+ │   │   │   └── e4eb7507c2dfbc2da2ec0b7929efec059417b5
+ │   │   ├─> ba
+ │   │   │   ├── 4d107e98536625515fb675c85c33d338c1e655
+ │   │   │   └── ad27c8c42580caede9011ec2058d738048c3ab
+ │   │   ├─> bb
+ │   │   │   ├── a4320738ae1614264e4412438b316f0a089f85
+ │   │   │   ├── abe6c5d77a37a69e1379f999a8d83aec0fef98
+ │   │   │   └── dcc2ddc8f35d2f232de63816f53aa9912fd5ed
+ │   │   ├─> bd
+ │   │   │   ├── 07e8aeb8d7139213f99340da0bf234f2ad437a
+ │   │   │   └── 2fdc7675c62b44d444b7f17dbab9c87021a14c
+ │   │   ├─> c0
+ │   │   │   └── 3485d1345c9f62adb49cdfd9cc1ad321551dc1
+ │   │   ├─> c1
+ │   │   │   └── 7e35b9b3d3f6704f88611ae30913471be1edce
+ │   │   ├─> c2
+ │   │   │   ├── 64f3039de3180a51928d85d96cccb8a0fef8af
+ │   │   │   └── a1c396decb90de8bf325eb143c1fee6322496e
+ │   │   ├─> c3
+ │   │   │   ├── 2ead7bd6751a65538b2dab204383f5bb9ee7bc
+ │   │   │   ├── c1bf9383c9264b6497a10eebb4d7e32a7e8cda
+ │   │   │   └── c496cc818aef4dc2d5bac628caf61c847fede0
+ │   │   ├─> c4
+ │   │   │   ├── 36f35c0453f7f92a1957ee88ec3d76e5fa6a77
+ │   │   │   └── ee0a86d70f5d9e4310c994ec04097312439506
+ │   │   ├─> c5
+ │   │   │   ├── 26b9f0ca2e52456257022250dd93e49b5e6b63
+ │   │   │   ├── 3390e0081b2f24cf0f96158430b8d3940c4f66
+ │   │   │   └── bad83d67d3a6fb71b968af84fad863266f77d7
+ │   │   ├─> c6
+ │   │   │   ├── 55e1cf36ea6adee1ced036cef90ca66067095e
+ │   │   │   ├── 618ee4b67331dba1a7b60890f21886008b30c4
+ │   │   │   ├── 62f100798910ff9963fe40cc842cee7805083a
+ │   │   │   └── d15e83b4adb9d72c61f0a47011ec98788320a8
+ │   │   ├─> c7
+ │   │   │   ├── 14083f2678faea937c78bef76a8ed03039b772
+ │   │   │   └── c951f2da2dbb28da3e4e1224f60e462003c2c2
+ │   │   ├─> c8
+ │   │   │   ├── 7d2fdacf6c1cad9aa0d35ff72845c1b6a80401
+ │   │   │   ├── 85f6a8d42ce3b0e9487836ef1185dafb3cfbae
+ │   │   │   └── e20292263bc3f10f46b0e681d548a90ffbaa49
+ │   │   ├─> c9
+ │   │   │   └── b998e3355c617154dfe8c72d812a4df68b10e8
+ │   │   ├─> ca
+ │   │   │   ├── 21519d8c79881d46b85e87d36cfa33556aaba2
+ │   │   │   ├── 58bbefa098adac3aef3bfeddbf30da6027aaa8
+ │   │   │   ├── 8658104d66f6c8b781e146aec7d7993075dc3f
+ │   │   │   ├── 91d4bc2dc7db690741003a6aee84fd3d6ee748
+ │   │   │   ├── b3507aa876846612c5b224714a8d442e93d539
+ │   │   │   └── e7671fb273032bd7f4f78054eef5dfdd415bad
+ │   │   ├─> cb
+ │   │   │   ├── 721cc7ebe17cae9c461572e55c43ba8773943b
+ │   │   │   └── e8db7f70befdd406ec1023a8bf48d9015bf7fb
+ │   │   ├─> cc
+ │   │   │   ├── 2f920b570d8c41a485fd02d8472b3f9b9e668c
+ │   │   │   └── a224325db49be4f53634748863582fd680409a
+ │   │   ├─> cd
+ │   │   │   ├── 021f30e1071b9e6552c3610aeb07e0bdb8afc6
+ │   │   │   ├── 936177e7d7ebd824a775e3ad7c0a055b785769
+ │   │   │   └── e1a2cbe1d26e10a285e6effe1c4fa8f8605f0f
+ │   │   ├─> cf
+ │   │   │   └── 96df21c89499ac006abcc270dcc4ee8b76f5fd
+ │   │   ├─> d0
+ │   │   │   ├── 9be066c8e7cf3f7afe915a60a8513c59893b1f
+ │   │   │   └── c6a57eb557b8df6032dccc1e389f2dcdc9e1b8
+ │   │   ├─> d1
+ │   │   │   └── bbe589f34b02ef467c879889b15552a9024f8d
+ │   │   ├─> d2
+ │   │   │   ├── cb00b7d9d1903050fcb576bb8169879b158179
+ │   │   │   └── ff3291fbf3b18b3061ca2ef55f85e910f2a8fa
+ │   │   ├─> d3
+ │   │   │   ├── 31c8d764216409c3b780b2dd4e1c04337a21d5
+ │   │   │   └── 533d08ec32cb7dc991dec771ab7455a9d46a1e
+ │   │   ├─> d4
+ │   │   │   └── 196dad064c006432e26e502abc8ea023f859f7
+ │   │   ├─> d5
+ │   │   │   ├── 045a1cc187cda1945d7e06e3bfc19bd278f90a
+ │   │   │   ├── 4598772804d4513176c84f91a836fc90343555
+ │   │   │   └── 6c96a5d6f8a69ff6a9c131e83c91b044e5f846
+ │   │   ├─> d6
+ │   │   │   ├── 59e96543eab5c7410a761130511f273e2f51ce
+ │   │   │   ├── f1174196891fb1ac4a051c6e4ecbb5b88a72b9
+ │   │   │   └── f2e1a1360b30d0076f2dafd3e768579b2290b9
+ │   │   ├─> d8
+ │   │   │   ├── 318d425ba3d7314ea9ce410945ff273ce9632e
+ │   │   │   ├── 9bd1bb95df376eb6e571029b7b9334738643f4
+ │   │   │   ├── a3cd11b486f763e8cbd83b3161e37faadc512f
+ │   │   │   └── d2b87b3c636affffecbf75339e71da22f4eb2a
+ │   │   ├─> da
+ │   │   │   └── e21db949bf9370d1bf1ab177d1a8bfbca367d7
+ │   │   ├─> db
+ │   │   │   ├── 2939c072c5e5df091551d71a3b4a0d48704ff2
+ │   │   │   └── 5e2df7881150e241fd0d74ffed19a62c01061e
+ │   │   ├─> dd
+ │   │   │   └── a8b3158bf33a3c51929e35374a6cb4ff975f02
+ │   │   ├─> e1
+ │   │   │   └── 3aef0336a2fa5d7e040d27929bef475f3c986f
+ │   │   ├─> e2
+ │   │   │   └── e87213e6a02ac76fbd683a7a40813e1b208a6f
+ │   │   ├─> e3
+ │   │   │   └── a1492ac9aea815c7b4f5b17ae4b5a656012cbb
+ │   │   ├─> e4
+ │   │   │   └── eb7d449cfd70d30769e9952c0d812aab7f6fe6
+ │   │   ├─> e5
+ │   │   │   └── c44ae4045f69f0f225d0c6898b845460716dff
+ │   │   ├─> e6
+ │   │   │   └── 9a1412a2c5bec45d9d0a370709341096e2bda9
+ │   │   ├─> e7
+ │   │   │   ├── 93c955d283af650ddf84ab1412849255646ab2
+ │   │   │   ├── a6c08714ac9e0ab71b1e35c0f36da520eebef7
+ │   │   │   └── aaf2390a3ee4aedac20d984b7318124e256964
+ │   │   ├─> e8
+ │   │   │   ├── 268873e075d255a30a656fd054841e7e050b6f
+ │   │   │   └── f2ba9d85c13b141c7f742a1614e5603ed78625
+ │   │   ├─> e9
+ │   │   │   └── e0fe62d7add07f24bcdb6997068f9af69f0af4
+ │   │   ├─> ea
+ │   │   │   └── aae80867e48862e49150cdfbb74712223117cd
+ │   │   ├─> eb
+ │   │   │   ├── 4309c8bc26b54929c7edcae66c3860b85fcebe
+ │   │   │   └── 9e22590731daa9c7a862b51b08b1df206a0260
+ │   │   ├─> ec
+ │   │   │   ├── 2e2c709e2c14688c92500b0a920eeccaadbbc2
+ │   │   │   ├── 64ea29eea42e772b7f268fc61688d62cea85ea
+ │   │   │   ├── 6a7c8f67ff2308e36eb5d6e437c3176448ab02
+ │   │   │   ├── a90dd9b36414c2da62f642a8c32b265d4b2ade
+ │   │   │   └── db20ff07382a408eb033919e88533f3a23aa81
+ │   │   ├─> ed
+ │   │   │   ├── 415a1e019d25c24a3a68be8a26c00ea8bc9fdb
+ │   │   │   ├── 86646a108e02b585fb87a9e698d08c6f8a602c
+ │   │   │   ├── a5c786d846cf8c032885abd4f286119299c173
+ │   │   │   └── d48498459108ceca7b0fa88e14171121c4a916
+ │   │   ├─> ee
+ │   │   │   ├── 82ca378ebdbe9657852e276db832083b34e279
+ │   │   │   └── 8855e7d4de1535eb9157a91b474149a4dac765
+ │   │   ├─> f0
+ │   │   │   ├── 23d66b549d3737338a9eaf91149541e85cbb3a
+ │   │   │   └── 3f3e62b44dc3530dfa647d07914793a3dfe067
+ │   │   ├─> f1
+ │   │   │   └── a56af00edaa33d800765812354b0ab2efb21cc
+ │   │   ├─> f2
+ │   │   │   ├── 1a4f4c340b309ab546f76fd5ceadd078834653
+ │   │   │   └── eb438cacbad8a9644b9f73523232b815929059
+ │   │   ├─> f3
+ │   │   │   ├── 383a661296214ed5e11a4110c01f89b1daa1d7
+ │   │   │   └── 9e61b175530916a1d79253ff9b2dba7269b966
+ │   │   ├─> f4
+ │   │   │   ├── 7e143cc9625c2b453ef27f08adb945057f566d
+ │   │   │   └── a86922d8bf58cd7cdfc92e0dce8a668a1f2b2c
+ │   │   ├─> f5
+ │   │   │   ├── 557b424cec4d367b6ac418f48fe4e4ec7e8a9b
+ │   │   │   └── 7932f8b96214d38c4ab2be5e7964cf575de51a
+ │   │   ├─> f6
+ │   │   │   ├── 2b3f082f3b23646a2d53fef1c46c3ef093d0ae
+ │   │   │   └── f6b0bf083c94b00401ed0c2f9d419f05dfca23
+ │   │   ├─> f7
+ │   │   │   ├── 0e62f53129f91e091cb953a0de28c51b25f30a
+ │   │   │   ├── 1c16b74c77c00ef8e7006ea1d7903220dc40de
+ │   │   │   └── ffc4b6caac2e30fb269e67796ba8683b0f1ee2
+ │   │   ├─> f8
+ │   │   │   └── 1ae77d33ee5626a2c3e7e97a9e95d01d1f2ac1
+ │   │   ├─> f9
+ │   │   │   ├── 29c7048925b7be301df29eeda861d75eb865fd
+ │   │   │   ├── b1628797767c136a0cfb02dc6a23b6855d7bc8
+ │   │   │   ├── c930ece2eea4ef93e2afffb467130e769a5340
+ │   │   │   └── f2812f0c3007a2ad6b88a0c26c96fa7b7b8c3d
+ │   │   ├─> fa
+ │   │   │   └── 04de18000fb74f0d6cf510fb0649ca3a55ade5
+ │   │   ├─> fb
+ │   │   │   └── 97f60abdc5bf06799ae7fc95844ce9836a3181
+ │   │   ├─> fc
+ │   │   │   ├── 01fa07f8e40c375b84549567b221fdb38cb992
+ │   │   │   └── a1b362a5c22513f822cc0f7e8085f81d47aa0d
+ │   │   ├─> fd
+ │   │   │   ├── 706d54bfa24eebc6ac986fb7a9787dfd7f05e5
+ │   │   │   └── 81620819134fb9c43abadf1e24d00e2f3fe47e
+ │   │   ├─> fe
+ │   │   │   ├── 480f1fab6ebe6928f13ab3d0d326396cae1649
+ │   │   │   └── d1bea7509af749e08b57a85065f76f620992aa
+ │   │   ├─> ff
+ │   │   │   ├── 668894f598e58a001e124acf55ce5ac86a4d7e
+ │   │   │   └── de20567bc80dc1db6736f6349bfb8d1328efb0
+ │   │   ├─> info
+ │   │   └─> pack
+ │   ├── ORIG_HEAD
+ │   └─> refs
+ │       ├─> heads
+ │       │   ├─> feature
+ │       │   │   ├── auth
+ │       │   │   ├── patient
+ │       │   │   └── validation-and-errors
+ │       │   ├── main
+ │       │   └── stage
+ │       ├─> remotes
+ │       │   └─> origin
+ │       │       ├─> feature
+ │       │       │   ├── auth
+ │       │       │   ├── patient
+ │       │       │   └── validation-and-errors
+ │       │       ├── HEAD
+ │       │       ├── main
+ │       │       └── stage
+ │       └─> tags
+ ├─> .github
+ │   └─> workflows
+ ├── .gitignore
+ ├─> .vs
+ │   ├─> MedSolutions
+ │   │   ├─> config
+ │   │   │   └── applicationhost.config
+ │   │   ├─> CopilotIndices
+ │   │   │   └─> 17.14.1231.31060
+ │   │   │       ├── CodeChunks.db
+ │   │   │       ├── CodeChunks.db-shm
+ │   │   │       ├── CodeChunks.db-wal
+ │   │   │       ├── SemanticSymbols.db
+ │   │   │       ├── SemanticSymbols.db-shm
+ │   │   │       └── SemanticSymbols.db-wal
+ │   │   ├─> DesignTimeBuild
+ │   │   │   └── .dtbcache.v2
+ │   │   ├─> FileContentIndex
+ │   │   │   ├── 1abf6f10-0da6-4a54-bcd2-851ffed3411e.vsidx
+ │   │   │   ├── 78393a98-72c4-4377-8099-2138d44c91cf.vsidx
+ │   │   │   ├── 89d24a8f-8be3-49a7-b724-acf867fe60c0.vsidx
+ │   │   │   ├── d97bca5f-55bc-4e7a-8251-7b363f656a73.vsidx
+ │   │   │   └── f6d98916-4c84-4ef2-ad91-d0a0215bb355.vsidx
+ │   │   └─> v17
+ │   │       ├── .futdcache.v2
+ │   │       ├── .suo
+ │   │       ├── DocumentLayout.backup.json
+ │   │       └── DocumentLayout.json
+ │   └─> ProjectEvaluation
+ │       ├── medsolutions.metadata.v9.bin
+ │       ├── medsolutions.projects.v9.bin
+ │       └── medsolutions.strings.v9.bin
+ ├─> .vscode
+ │   ├── extensions.json
+ │   ├── settings.json
+ │   └── tasks.json
+ ├── filelist.txt
+ ├── format.cmd
+ ├── gitattributes
+ ├─> MedSolutions.Api
+ │   ├── appsettings.Development.json
+ │   ├── appsettings.json
+ │   ├─> bin
+ │   │   └─> Debug
+ │   │       └─> net9.0
+ │   │           ├── appsettings.Development.json
+ │   │           ├── appsettings.json
+ │   │           ├── AutoMapper.dll
+ │   │           ├── Bogus.dll
+ │   │           ├─> cs
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├─> de
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├─> es
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├─> fr
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├── Humanizer.dll
+ │   │           ├─> it
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├─> ja
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├─> ko
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├── MedSolutions.Api.deps.json
+ │   │           ├── MedSolutions.Api.dll
+ │   │           ├── MedSolutions.Api.exe
+ │   │           ├── MedSolutions.Api.pdb
+ │   │           ├── MedSolutions.Api.runtimeconfig.json
+ │   │           ├── MedSolutions.Api.staticwebassets.endpoints.json
+ │   │           ├── MedSolutions.Api.staticwebassets.runtime.json
+ │   │           ├── MedSolutions.App.dll
+ │   │           ├── MedSolutions.App.pdb
+ │   │           ├── MedSolutions.Domain.dll
+ │   │           ├── MedSolutions.Domain.pdb
+ │   │           ├── MedSolutions.Infrastructure.dll
+ │   │           ├── MedSolutions.Infrastructure.pdb
+ │   │           ├── MedSolutions.Shared.dll
+ │   │           ├── MedSolutions.Shared.pdb
+ │   │           ├── Microsoft.AspNetCore.Authentication.JwtBearer.dll
+ │   │           ├── Microsoft.AspNetCore.Cryptography.Internal.dll
+ │   │           ├── Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+ │   │           ├── Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+ │   │           ├── Microsoft.AspNetCore.OpenApi.dll
+ │   │           ├── Microsoft.Bcl.AsyncInterfaces.dll
+ │   │           ├── Microsoft.Build.Locator.dll
+ │   │           ├── Microsoft.CodeAnalysis.CSharp.dll
+ │   │           ├── Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+ │   │           ├── Microsoft.CodeAnalysis.dll
+ │   │           ├── Microsoft.CodeAnalysis.Workspaces.dll
+ │   │           ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+ │   │           ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+ │   │           ├── Microsoft.Data.Sqlite.dll
+ │   │           ├── Microsoft.EntityFrameworkCore.Abstractions.dll
+ │   │           ├── Microsoft.EntityFrameworkCore.Design.dll
+ │   │           ├── Microsoft.EntityFrameworkCore.dll
+ │   │           ├── Microsoft.EntityFrameworkCore.Relational.dll
+ │   │           ├── Microsoft.EntityFrameworkCore.Sqlite.dll
+ │   │           ├── Microsoft.Extensions.Caching.Abstractions.dll
+ │   │           ├── Microsoft.Extensions.Caching.Memory.dll
+ │   │           ├── Microsoft.Extensions.Configuration.Abstractions.dll
+ │   │           ├── Microsoft.Extensions.Configuration.Binder.dll
+ │   │           ├── Microsoft.Extensions.DependencyInjection.Abstractions.dll
+ │   │           ├── Microsoft.Extensions.DependencyInjection.dll
+ │   │           ├── Microsoft.Extensions.DependencyModel.dll
+ │   │           ├── Microsoft.Extensions.Identity.Core.dll
+ │   │           ├── Microsoft.Extensions.Identity.Stores.dll
+ │   │           ├── Microsoft.Extensions.Logging.Abstractions.dll
+ │   │           ├── Microsoft.Extensions.Logging.dll
+ │   │           ├── Microsoft.Extensions.Options.dll
+ │   │           ├── Microsoft.Extensions.Primitives.dll
+ │   │           ├── Microsoft.IdentityModel.Abstractions.dll
+ │   │           ├── Microsoft.IdentityModel.JsonWebTokens.dll
+ │   │           ├── Microsoft.IdentityModel.Logging.dll
+ │   │           ├── Microsoft.IdentityModel.Protocols.dll
+ │   │           ├── Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+ │   │           ├── Microsoft.IdentityModel.Tokens.dll
+ │   │           ├── Microsoft.OpenApi.dll
+ │   │           ├── Mono.TextTemplating.dll
+ │   │           ├── MySqlConnector.dll
+ │   │           ├── NetTopologySuite.dll
+ │   │           ├─> pl
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├── Pomelo.EntityFrameworkCore.MySql.dll
+ │   │           ├── Pomelo.EntityFrameworkCore.MySql.NetTopologySuite.dll
+ │   │           ├─> pt-BR
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├─> ru
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├─> runtimes
+ │   │           │   ├─> browser-wasm
+ │   │           │   │   └─> nativeassets
+ │   │           │   │       └─> net9.0
+ │   │           │   │           └── e_sqlite3.a
+ │   │           │   ├─> linux-arm
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-arm64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-armel
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-mips64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-musl-arm
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-musl-arm64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-musl-s390x
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-musl-x64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-ppc64le
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-s390x
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-x64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> linux-x86
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.so
+ │   │           │   ├─> maccatalyst-arm64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.dylib
+ │   │           │   ├─> maccatalyst-x64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.dylib
+ │   │           │   ├─> osx-arm64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.dylib
+ │   │           │   ├─> osx-x64
+ │   │           │   │   └─> native
+ │   │           │   │       └── libe_sqlite3.dylib
+ │   │           │   ├─> win-arm
+ │   │           │   │   └─> native
+ │   │           │   │       └── e_sqlite3.dll
+ │   │           │   ├─> win-arm64
+ │   │           │   │   └─> native
+ │   │           │   │       └── e_sqlite3.dll
+ │   │           │   ├─> win-x64
+ │   │           │   │   └─> native
+ │   │           │   │       └── e_sqlite3.dll
+ │   │           │   └─> win-x86
+ │   │           │       └─> native
+ │   │           │           └── e_sqlite3.dll
+ │   │           ├── Serilog.AspNetCore.dll
+ │   │           ├── Serilog.dll
+ │   │           ├── Serilog.Enrichers.HttpContext.dll
+ │   │           ├── Serilog.Expressions.dll
+ │   │           ├── Serilog.Extensions.Hosting.dll
+ │   │           ├── Serilog.Extensions.Logging.dll
+ │   │           ├── Serilog.Formatting.Compact.dll
+ │   │           ├── Serilog.Settings.Configuration.dll
+ │   │           ├── Serilog.Sinks.Console.dll
+ │   │           ├── Serilog.Sinks.Debug.dll
+ │   │           ├── Serilog.Sinks.File.dll
+ │   │           ├── Serilog.Sinks.GraylogGelf.dll
+ │   │           ├── Serilog.Sinks.Seq.dll
+ │   │           ├── SharpCompress.dll
+ │   │           ├── SQLitePCLRaw.batteries_v2.dll
+ │   │           ├── SQLitePCLRaw.core.dll
+ │   │           ├── SQLitePCLRaw.provider.e_sqlite3.dll
+ │   │           ├── Swashbuckle.AspNetCore.Swagger.dll
+ │   │           ├── Swashbuckle.AspNetCore.SwaggerGen.dll
+ │   │           ├── Swashbuckle.AspNetCore.SwaggerUI.dll
+ │   │           ├── System.CodeDom.dll
+ │   │           ├── System.Composition.AttributedModel.dll
+ │   │           ├── System.Composition.Convention.dll
+ │   │           ├── System.Composition.Hosting.dll
+ │   │           ├── System.Composition.Runtime.dll
+ │   │           ├── System.Composition.TypedParts.dll
+ │   │           ├── System.IdentityModel.Tokens.Jwt.dll
+ │   │           ├─> tr
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           ├─> zh-Hans
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.resources.dll
+ │   │           │   ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │           │   └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   │           └─> zh-Hant
+ │   │               ├── Microsoft.CodeAnalysis.CSharp.resources.dll
+ │   │               ├── Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+ │   │               ├── Microsoft.CodeAnalysis.resources.dll
+ │   │               ├── Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+ │   │               └── Microsoft.CodeAnalysis.Workspaces.resources.dll
+ │   ├─> Common
+ │   ├─> Controllers
+ │   │   ├── AuthController.cs
+ │   │   └── PatientsController.cs
+ │   ├── DependencyInjection.cs
+ │   ├─> Exceptions
+ │   │   ├── ExceptionMapper.cs
+ │   │   └── ValidationResponseFactory.cs
+ │   ├─> Filters
+ │   │   └── ApiResponseWrapperFilter.cs
+ │   ├─> Logging
+ │   │   ├── ApiLoggerExtensions.cs
+ │   │   └── StartupLoggerExtensions.cs
+ │   ├── MedSolutions.Api.csproj
+ │   ├── MedSolutions.Api.http
+ │   ├─> Middlewares
+ │   │   ├── CustomCorsPolicyProvider.cs
+ │   │   └── ErrorHandlingMiddleware.cs
+ │   ├─> obj
+ │   │   ├─> Debug
+ │   │   │   └─> net9.0
+ │   │   │       ├── .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+ │   │   │       ├── ApiEndpoints.json
+ │   │   │       ├── apphost.exe
+ │   │   │       ├── MedSolut.6AE54118.Up2Date
+ │   │   │       ├── MedSolutions.Api.AssemblyInfo.cs
+ │   │   │       ├── MedSolutions.Api.AssemblyInfoInputs.cache
+ │   │   │       ├── MedSolutions.Api.assets.cache
+ │   │   │       ├── MedSolutions.Api.csproj.AssemblyReference.cache
+ │   │   │       ├── MedSolutions.Api.csproj.BuildWithSkipAnalyzers
+ │   │   │       ├── MedSolutions.Api.csproj.CoreCompileInputs.cache
+ │   │   │       ├── MedSolutions.Api.csproj.FileListAbsolute.txt
+ │   │   │       ├── MedSolutions.Api.dll
+ │   │   │       ├── MedSolutions.Api.GeneratedMSBuildEditorConfig.editorconfig
+ │   │   │       ├── MedSolutions.Api.genruntimeconfig.cache
+ │   │   │       ├── MedSolutions.Api.GlobalUsings.g.cs
+ │   │   │       ├── MedSolutions.Api.MvcApplicationPartsAssemblyInfo.cache
+ │   │   │       ├── MedSolutions.Api.MvcApplicationPartsAssemblyInfo.cs
+ │   │   │       ├── MedSolutions.Api.pdb
+ │   │   │       ├── MedSolutions.Api.sourcelink.json
+ │   │   │       ├─> ref
+ │   │   │       │   └── MedSolutions.Api.dll
+ │   │   │       ├─> refint
+ │   │   │       │   └── MedSolutions.Api.dll
+ │   │   │       ├── rjsmcshtml.dswa.cache.json
+ │   │   │       ├── rjsmrazor.dswa.cache.json
+ │   │   │       ├── rpswa.dswa.cache.json
+ │   │   │       ├─> staticwebassets
+ │   │   │       ├── staticwebassets.build.endpoints.json
+ │   │   │       ├── staticwebassets.build.json
+ │   │   │       ├── staticwebassets.build.json.cache
+ │   │   │       ├── staticwebassets.development.json
+ │   │   │       ├── staticwebassets.references.upToDateCheck.txt
+ │   │   │       └── staticwebassets.removed.txt
+ │   │   ├── MedSolutions.Api.csproj.EntityFrameworkCore.targets
+ │   │   ├── MedSolutions.Api.csproj.nuget.dgspec.json
+ │   │   ├── MedSolutions.Api.csproj.nuget.g.props
+ │   │   ├── MedSolutions.Api.csproj.nuget.g.targets
+ │   │   ├── project.assets.json
+ │   │   └── project.nuget.cache
+ │   ├── Program.cs
+ │   ├─> Properties
+ │   │   └── launchSettings.json
+ │   ├─> Services
+ │   │   └── CurrentMedicalProfileService.cs
+ │   ├── WeatherForecast.cs
+ │   └─> wwwroot
+ ├─> MedSolutions.App
+ │   ├─> bin
+ │   │   └─> Debug
+ │   │       └─> net9.0
+ │   │           ├── MedSolutions.App.deps.json
+ │   │           ├── MedSolutions.App.dll
+ │   │           ├── MedSolutions.App.pdb
+ │   │           ├── MedSolutions.Domain.dll
+ │   │           ├── MedSolutions.Domain.pdb
+ │   │           ├── MedSolutions.Shared.dll
+ │   │           └── MedSolutions.Shared.pdb
+ │   ├─> Common
+ │   │   ├─> DTOs
+ │   │   │   ├── ErrorResponseDTO.cs
+ │   │   │   ├── LoginRequestDTO.cs
+ │   │   │   ├── LoginResponseDTO.cs
+ │   │   │   ├── ResponseDTO.cs
+ │   │   │   └── TokenDTO.cs
+ │   │   ├─> Extensions
+ │   │   │   ├── QueryableOrderExtensions.cs
+ │   │   │   ├── QueryFilterExtension.cs
+ │   │   │   ├── QueryPaginationExtension.cs
+ │   │   │   └── QuerySortingExtension.cs
+ │   │   └─> Models
+ │   │       ├── PaginationViewModel.cs
+ │   │       ├── QueryFilter.cs
+ │   │       ├── QueryGlobalSearch.cs
+ │   │       ├── QueryPagination.cs
+ │   │       └── QuerySorting.cs
+ │   ├── DependencyInjection.cs
+ │   ├─> DTOs
+ │   │   ├── PatientBaseDTO.cs
+ │   │   └── UserDTO.cs
+ │   ├─> Exceptions
+ │   │   ├── AuthenticationFailedException.cs
+ │   │   ├── InvalidTokenException.cs
+ │   │   └── UserNotFoundException.cs
+ │   ├─> Extensions
+ │   │   ├── PatientOrderedQueryExtensions.cs
+ │   │   └── PatientQueryExtensions.cs
+ │   ├─> Filters
+ │   │   ├── PatientQueryFilter.cs
+ │   │   ├── PatientQueryGlobalSearch.cs
+ │   │   └── PatientQuerySorting.cs
+ │   ├─> Interfaces
+ │   │   ├── IAuthService.cs
+ │   │   ├── ICurrentMedicalProfileService.cs
+ │   │   └── IPatientService.cs
+ │   ├─> Logging
+ │   │   ├── AuthLoggerExtensions.cs
+ │   │   └── PatientServiceLoggerExtensions.cs
+ │   ├─> Mapping
+ │   │   ├── MedicalProfileProfile.cs
+ │   │   ├── PatientProfile.cs
+ │   │   └── UserProfile.cs
+ │   ├── MedSolutions.App.csproj
+ │   ├─> obj
+ │   │   ├─> Debug
+ │   │   │   └─> net9.0
+ │   │   │       ├── .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+ │   │   │       ├── MedSolut.27724118.Up2Date
+ │   │   │       ├── MedSolutions.App.AssemblyInfo.cs
+ │   │   │       ├── MedSolutions.App.AssemblyInfoInputs.cache
+ │   │   │       ├── MedSolutions.App.assets.cache
+ │   │   │       ├── MedSolutions.App.csproj.AssemblyReference.cache
+ │   │   │       ├── MedSolutions.App.csproj.BuildWithSkipAnalyzers
+ │   │   │       ├── MedSolutions.App.csproj.CoreCompileInputs.cache
+ │   │   │       ├── MedSolutions.App.csproj.FileListAbsolute.txt
+ │   │   │       ├── MedSolutions.App.dll
+ │   │   │       ├── MedSolutions.App.GeneratedMSBuildEditorConfig.editorconfig
+ │   │   │       ├── MedSolutions.App.GlobalUsings.g.cs
+ │   │   │       ├── MedSolutions.App.pdb
+ │   │   │       ├── MedSolutions.App.sourcelink.json
+ │   │   │       ├─> ref
+ │   │   │       │   └── MedSolutions.App.dll
+ │   │   │       └─> refint
+ │   │   │           └── MedSolutions.App.dll
+ │   │   ├── MedSolutions.App.csproj.nuget.dgspec.json
+ │   │   ├── MedSolutions.App.csproj.nuget.g.props
+ │   │   ├── MedSolutions.App.csproj.nuget.g.targets
+ │   │   ├── project.assets.json
+ │   │   └── project.nuget.cache
+ │   ├─> Services
+ │   │   ├── AuthService.cs
+ │   │   └── PatientService.cs
+ │   ├─> ValidationAttributes
+ │   └─> ViewModels
+ │       └── PatientViewModel.cs
+ ├─> MedSolutions.App.Tests
+ │   ├─> bin
+ │   │   └─> Debug
+ │   │       └─> net9.0
+ │   │           ├── MedSolutions.App.dll
+ │   │           ├── MedSolutions.App.pdb
+ │   │           ├── MedSolutions.App.Tests.deps.json
+ │   │           ├── MedSolutions.App.Tests.dll
+ │   │           ├── MedSolutions.App.Tests.pdb
+ │   │           ├── MedSolutions.Domain.dll
+ │   │           ├── MedSolutions.Domain.pdb
+ │   │           ├── MedSolutions.Shared.dll
+ │   │           └── MedSolutions.Shared.pdb
+ │   ├── MedSolutions.App.Tests.csproj
+ │   ├─> obj
+ │   │   ├─> Debug
+ │   │   │   └─> net9.0
+ │   │   │       ├── .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+ │   │   │       ├── MedSolut.693B672A.Up2Date
+ │   │   │       ├── MedSolutions.App.Tests.AssemblyInfo.cs
+ │   │   │       ├── MedSolutions.App.Tests.AssemblyInfoInputs.cache
+ │   │   │       ├── MedSolutions.App.Tests.assets.cache
+ │   │   │       ├── MedSolutions.App.Tests.csproj.AssemblyReference.cache
+ │   │   │       ├── MedSolutions.App.Tests.csproj.CoreCompileInputs.cache
+ │   │   │       ├── MedSolutions.App.Tests.csproj.FileListAbsolute.txt
+ │   │   │       ├── MedSolutions.App.Tests.dll
+ │   │   │       ├── MedSolutions.App.Tests.GeneratedMSBuildEditorConfig.editorconfig
+ │   │   │       ├── MedSolutions.App.Tests.GlobalUsings.g.cs
+ │   │   │       ├── MedSolutions.App.Tests.pdb
+ │   │   │       ├── MedSolutions.App.Tests.sourcelink.json
+ │   │   │       ├─> ref
+ │   │   │       │   └── MedSolutions.App.Tests.dll
+ │   │   │       └─> refint
+ │   │   │           └── MedSolutions.App.Tests.dll
+ │   │   ├── MedSolutions.App.Tests.csproj.nuget.dgspec.json
+ │   │   ├── MedSolutions.App.Tests.csproj.nuget.g.props
+ │   │   ├── MedSolutions.App.Tests.csproj.nuget.g.targets
+ │   │   ├── project.assets.json
+ │   │   └── project.nuget.cache
+ │   └─> Services
+ ├─> MedSolutions.Domain
+ │   ├─> bin
+ │   │   └─> Debug
+ │   │       └─> net9.0
+ │   │           ├── MedSolutions.Domain.deps.json
+ │   │           ├── MedSolutions.Domain.dll
+ │   │           ├── MedSolutions.Domain.pdb
+ │   │           ├── MedSolutions.Shared.dll
+ │   │           └── MedSolutions.Shared.pdb
+ │   ├─> Common
+ │   │   ├─> Exceptions
+ │   │   │   └── AppException.cs
+ │   │   ├─> Interfaces
+ │   │   │   └── IRepositoryBase.cs
+ │   │   └─> Models
+ │   │       ├── BaseEntity.cs
+ │   │       ├── BusinessEntity.cs
+ │   │       └── VisibilityEntity.cs
+ │   ├─> Enums
+ │   │   ├── Gender.cs
+ │   │   ├── MedicalSpecialty.cs
+ │   │   ├── Priority.cs
+ │   │   ├── Role.cs
+ │   │   └── State.cs
+ │   ├─> Interfaces
+ │   │   └── IPatientRepository.cs
+ │   ├── MedSolutions.Domain.csproj
+ │   ├─> Models
+ │   │   ├── Appointment.cs
+ │   │   ├── AppointmentType.cs
+ │   │   ├── MedicalProfile.cs
+ │   │   ├── MedicalSpecialty.cs
+ │   │   ├── Patient.cs
+ │   │   ├── PatientPair.cs
+ │   │   ├── PatientPairType.cs
+ │   │   └── User.cs
+ │   └─> obj
+ │       ├─> Debug
+ │       │   └─> net9.0
+ │       │       ├── .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+ │       │       ├── EFCoreMySqlNetTopologySuite.cs
+ │       │       ├── MedSolut.DFD129BB.Up2Date
+ │       │       ├── MedSolutions.Domain.AssemblyInfo.cs
+ │       │       ├── MedSolutions.Domain.AssemblyInfoInputs.cache
+ │       │       ├── MedSolutions.Domain.assets.cache
+ │       │       ├── MedSolutions.Domain.csproj.AssemblyReference.cache
+ │       │       ├── MedSolutions.Domain.csproj.BuildWithSkipAnalyzers
+ │       │       ├── MedSolutions.Domain.csproj.CoreCompileInputs.cache
+ │       │       ├── MedSolutions.Domain.csproj.FileListAbsolute.txt
+ │       │       ├── MedSolutions.Domain.dll
+ │       │       ├── MedSolutions.Domain.GeneratedMSBuildEditorConfig.editorconfig
+ │       │       ├── MedSolutions.Domain.GlobalUsings.g.cs
+ │       │       ├── MedSolutions.Domain.pdb
+ │       │       ├── MedSolutions.Domain.sourcelink.json
+ │       │       ├─> ref
+ │       │       │   └── MedSolutions.Domain.dll
+ │       │       └─> refint
+ │       │           └── MedSolutions.Domain.dll
+ │       ├── MedSolutions.Domain.csproj.nuget.dgspec.json
+ │       ├── MedSolutions.Domain.csproj.nuget.g.props
+ │       ├── MedSolutions.Domain.csproj.nuget.g.targets
+ │       ├── project.assets.json
+ │       └── project.nuget.cache
+ ├─> MedSolutions.Infrastructure
+ │   ├─> bin
+ │   │   └─> Debug
+ │   │       └─> net9.0
+ │   │           ├── MedSolutions.App.dll
+ │   │           ├── MedSolutions.App.pdb
+ │   │           ├── MedSolutions.Domain.dll
+ │   │           ├── MedSolutions.Domain.pdb
+ │   │           ├── MedSolutions.Infrastructure.deps.json
+ │   │           ├── MedSolutions.Infrastructure.dll
+ │   │           ├── MedSolutions.Infrastructure.pdb
+ │   │           ├── MedSolutions.Infrastructure.runtimeconfig.json
+ │   │           ├── MedSolutions.Shared.dll
+ │   │           └── MedSolutions.Shared.pdb
+ │   ├─> Common
+ │   │   ├─> Extensions
+ │   │   │   └── ModelBuilderExtensions.cs
+ │   │   └─> Repositories
+ │   │       └── RepositoryBase.cs
+ │   ├─> Data
+ │   │   ├─> Configurations
+ │   │   │   ├── AppointmentConfiguration.cs
+ │   │   │   ├── AppointmentTypeConfiguration.cs
+ │   │   │   ├── MedicalProfileConfiguration.cs
+ │   │   │   ├── MedicalSpecialtyConfiguration.cs
+ │   │   │   ├── PatientConfiguration.cs
+ │   │   │   ├── PatientPairConfiguration.cs
+ │   │   │   ├── PatientPairTypeConfiguration.cs
+ │   │   │   └── UserConfiguration.cs
+ │   │   ├─> Converters
+ │   │   │   ├── GuidConverter.cs
+ │   │   │   ├── LowercaseGuidConverter.cs
+ │   │   │   ├── NullableGuidConverter.cs
+ │   │   │   └── NullableLowercaseGuidConverter.cs
+ │   │   ├─> Helpers
+ │   │   │   └── DbProviderInfo.cs
+ │   │   ├─> Interceptors
+ │   │   │   ├── PatientPairNormalizeInterceptor.cs
+ │   │   │   ├── PatientSaveChangesInterceptor.cs
+ │   │   │   ├── SoftDeleteInterceptor.cs
+ │   │   │   ├── SqliteForeignKeyEnabler.cs
+ │   │   │   └── UpdateTimestampsInterceptor.cs
+ │   │   ├── MedSolutionsDbContext.cs
+ │   │   ├─> Seed
+ │   │   │   ├─> DTOs
+ │   │   │   │   ├── MedicalProfileConfigureDTO.cs
+ │   │   │   │   └── UserConfigureDTO.cs
+ │   │   │   ├─> Fakers
+ │   │   │   │   ├── AppointmentFaker.cs
+ │   │   │   │   ├── MedicalProfileFaker.cs
+ │   │   │   │   ├── PatientFaker.cs
+ │   │   │   │   ├── PatientPairFaker.cs
+ │   │   │   │   └── UserFaker.cs
+ │   │   │   ├─> Mapping
+ │   │   │   │   ├── MedicalProfileProfile.cs
+ │   │   │   │   └── UserProfile.cs
+ │   │   │   └── Seeder.cs
+ │   │   └─> ValueGenerators
+ │   │       ├── PointValueGenerator.cs
+ │   │       └── SequentialGuidValueGenerator.cs
+ │   ├── DependencyInjection.cs
+ │   ├─> Logging
+ │   │   └── SeederLoggerExtensions.cs
+ │   ├── MedSolutions.Infrastructure.csproj
+ │   ├─> obj
+ │   │   ├─> Debug
+ │   │   │   └─> net9.0
+ │   │   │       ├── .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+ │   │   │       ├── EFCoreMySqlNetTopologySuite.cs
+ │   │   │       ├── MedSolut.CAA47755.Up2Date
+ │   │   │       ├── MedSolutions.Infrastructure.AssemblyInfo.cs
+ │   │   │       ├── MedSolutions.Infrastructure.AssemblyInfoInputs.cache
+ │   │   │       ├── MedSolutions.Infrastructure.assets.cache
+ │   │   │       ├── MedSolutions.Infrastructure.csproj.AssemblyReference.cache
+ │   │   │       ├── MedSolutions.Infrastructure.csproj.BuildWithSkipAnalyzers
+ │   │   │       ├── MedSolutions.Infrastructure.csproj.CoreCompileInputs.cache
+ │   │   │       ├── MedSolutions.Infrastructure.csproj.FileListAbsolute.txt
+ │   │   │       ├── MedSolutions.Infrastructure.dll
+ │   │   │       ├── MedSolutions.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+ │   │   │       ├── MedSolutions.Infrastructure.genruntimeconfig.cache
+ │   │   │       ├── MedSolutions.Infrastructure.GlobalUsings.g.cs
+ │   │   │       ├── MedSolutions.Infrastructure.pdb
+ │   │   │       ├── MedSolutions.Infrastructure.sourcelink.json
+ │   │   │       ├─> ref
+ │   │   │       │   └── MedSolutions.Infrastructure.dll
+ │   │   │       └─> refint
+ │   │   │           └── MedSolutions.Infrastructure.dll
+ │   │   ├── MedSolutions.Infrastructure.csproj.EntityFrameworkCore.targets
+ │   │   ├── MedSolutions.Infrastructure.csproj.nuget.dgspec.json
+ │   │   ├── MedSolutions.Infrastructure.csproj.nuget.g.props
+ │   │   ├── MedSolutions.Infrastructure.csproj.nuget.g.targets
+ │   │   ├── project.assets.json
+ │   │   └── project.nuget.cache
+ │   └─> Repositories
+ │       └── PatientRepository.cs
+ ├─> MedSolutions.Shared
+ │   ├─> bin
+ │   │   └─> Debug
+ │   │       └─> net9.0
+ │   │           ├── MedSolutions.Shared.deps.json
+ │   │           ├── MedSolutions.Shared.dll
+ │   │           └── MedSolutions.Shared.pdb
+ │   ├─> Extensions
+ │   │   ├── DateTimeExtensions.cs
+ │   │   ├── GuidExtensions.cs
+ │   │   └── StringExtensions.cs
+ │   ├─> Helpers
+ │   │   └── GreeklishConverter.cs
+ │   ├── MedSolutions.Shared.csproj
+ │   └─> obj
+ │       ├─> Debug
+ │       │   └─> net9.0
+ │       │       ├── .NETCoreApp,Version=v9.0.AssemblyAttributes.cs
+ │       │       ├── MedSolutions.Shared.AssemblyInfo.cs
+ │       │       ├── MedSolutions.Shared.AssemblyInfoInputs.cache
+ │       │       ├── MedSolutions.Shared.assets.cache
+ │       │       ├── MedSolutions.Shared.csproj.BuildWithSkipAnalyzers
+ │       │       ├── MedSolutions.Shared.csproj.CoreCompileInputs.cache
+ │       │       ├── MedSolutions.Shared.csproj.FileListAbsolute.txt
+ │       │       ├── MedSolutions.Shared.dll
+ │       │       ├── MedSolutions.Shared.GeneratedMSBuildEditorConfig.editorconfig
+ │       │       ├── MedSolutions.Shared.GlobalUsings.g.cs
+ │       │       ├── MedSolutions.Shared.pdb
+ │       │       ├── MedSolutions.Shared.sourcelink.json
+ │       │       ├─> ref
+ │       │       │   └── MedSolutions.Shared.dll
+ │       │       └─> refint
+ │       │           └── MedSolutions.Shared.dll
+ │       ├── MedSolutions.Shared.csproj.nuget.dgspec.json
+ │       ├── MedSolutions.Shared.csproj.nuget.g.props
+ │       ├── MedSolutions.Shared.csproj.nuget.g.targets
+ │       ├── project.assets.json
+ │       └── project.nuget.cache
+ ├── MedSolutions.sln
+ ├── migrate.cmd
+ └── README.md

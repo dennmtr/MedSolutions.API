@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MedSolutions.Infrastructure.Common.Extensions;
+namespace MedSolutions.Infrastructure.Extensions;
 
 public static class ModelBuilderExtensions
 {

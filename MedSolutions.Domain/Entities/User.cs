@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace MedSolutions.Domain.Models;
+namespace MedSolutions.Domain.Entities;
 
 public class User : IdentityUser<Guid>
 {

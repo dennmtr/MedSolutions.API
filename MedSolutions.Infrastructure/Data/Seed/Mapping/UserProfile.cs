@@ -1,5 +1,5 @@
 using AutoMapper;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Infrastructure.Data.Seed.DTOs;
 
 namespace MedSolutions.Infrastructure.Data.Seed.Mapping;

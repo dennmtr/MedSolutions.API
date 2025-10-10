@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using AutoMapper;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Infrastructure.Data.Seed.DTOs;
 using MedSolutions.Infrastructure.Data.Seed.Fakers;
 using MedSolutions.Infrastructure.Data.Seed.Mapping;

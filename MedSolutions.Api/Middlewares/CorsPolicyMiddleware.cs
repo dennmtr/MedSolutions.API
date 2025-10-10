@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace MedSolutions.Api.Middlewares;
 
-public class CustomCorsPolicyProvider : ICorsPolicyProvider
+public class CorsPolicyMiddleware : ICorsPolicyProvider
 {
     public Task<CorsPolicy> GetPolicyAsync(HttpContext context, string policyName)
     {

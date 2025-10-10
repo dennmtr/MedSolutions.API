@@ -2,14 +2,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using MedSolutions.Domain.Common.Models;
 
-namespace MedSolutions.Domain.Models;
+namespace MedSolutions.Domain.Entities;
 
-public class MedicalSpecialty : BusinessEntity
+public class PatientPairType : BusinessEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public Enums.MedicalSpecialty Id { get; set; }
-
+    public short Id { get; set; }
     [MaxLength(50)]
     public string Description { get; set; } = default!;
 }
+
+

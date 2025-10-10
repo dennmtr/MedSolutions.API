@@ -1,4 +1,4 @@
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 

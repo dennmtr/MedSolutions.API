@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using MedSolutions.Domain.Common.Models;
 using NetTopologySuite.Geometries;
 
-namespace MedSolutions.Domain.Models;
+namespace MedSolutions.Domain.Entities;
 
 public class Patient : BaseEntity
 {

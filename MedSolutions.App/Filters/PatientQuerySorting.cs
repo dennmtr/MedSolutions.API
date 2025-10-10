@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using MedSolutions.App.Common.Models;
 using MedSolutions.App.Extensions;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 
 namespace MedSolutions.App.Filters;
 

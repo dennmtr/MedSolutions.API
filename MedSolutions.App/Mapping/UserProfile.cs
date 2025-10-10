@@ -1,7 +1,7 @@
 using AutoMapper;
 using MedSolutions.App.Common.DTOs;
 using MedSolutions.App.DTOs;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 
 namespace MedSolutions.App.Mapping;
 

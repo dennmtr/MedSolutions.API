@@ -1,5 +1,5 @@
 using MedSolutions.Domain.Interfaces;
-using MedSolutions.Domain.Models;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Infrastructure.Common.Repositories;
 using MedSolutions.Infrastructure.Data;
 
