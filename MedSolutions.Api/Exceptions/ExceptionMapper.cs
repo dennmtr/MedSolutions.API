@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Security;
-using MedSolutions.Domain.Common.Exceptions;
+using MedSolutions.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace MedSolutions.Api.Exceptions;

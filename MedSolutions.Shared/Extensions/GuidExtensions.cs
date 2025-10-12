@@ -6,15 +6,11 @@ public static class GuidExtensions
 {
     private static long _counter = DateTime.UtcNow.Ticks;
 
-    /// <summary>
-    /// Generates a sequential GUID suitable for database indexing.
-    /// </summary>
     public static Guid NewSequentialGuid()
     {
         Span<byte> guidBytes = stackalloc byte[16];
         Guid.NewGuid().TryWriteBytes(guidBytes);
 
-        // Increment counter atomically
         var incrementedCounter = Interlocked.Increment(ref _counter);
         Span<byte> counterBytes = stackalloc byte[sizeof(long)];
         MemoryMarshal.Write(counterBytes, ref incrementedCounter);
@@ -24,7 +20,6 @@ public static class GuidExtensions
             counterBytes.Reverse();
         }
 
-        // Embed counter into last 8 bytes
         guidBytes[8] = counterBytes[1];
         guidBytes[9] = counterBytes[0];
         guidBytes[10] = counterBytes[7];

@@ -1,12 +1,11 @@
 using MedSolutions.Domain.Entities;
-using MedSolutions.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace MedSolutions.Infrastructure.Data.Interceptors;
 
-public class PatientSaveChangesInterceptor : SaveChangesInterceptor
+public class AppointmentSaveChangesInterceptor : SaveChangesInterceptor
 {
     public override InterceptionResult<int> SavingChanges(
         DbContextEventData eventData,
@@ -27,15 +26,11 @@ public class PatientSaveChangesInterceptor : SaveChangesInterceptor
 
     private static void OnSavingChanges(DbContext context)
     {
-        foreach (EntityEntry<Patient> entry in context.ChangeTracker.Entries<Patient>())
+        foreach (EntityEntry<Appointment> entry in context.ChangeTracker.Entries<Appointment>())
         {
             if (entry.State is EntityState.Added or EntityState.Modified)
             {
-                Patient patient = entry.Entity;
-
-                patient.FirstNameLatin = patient.FirstName.ToLatin().ToLowerInvariant();
-                patient.LastNameLatin = patient.LastName.ToLatin().ToLowerInvariant();
-                patient.CityLatin = patient.City.ToLatin().ToLowerInvariant();
+                _ = entry.Entity;
             }
         }
     }

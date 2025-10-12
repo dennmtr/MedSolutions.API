@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MedSolutions.Domain.Common.Models;
+using MedSolutions.Domain.Common.Entities;
 
 namespace MedSolutions.Domain.Entities;
 

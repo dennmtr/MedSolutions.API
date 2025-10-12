@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MedSolutions.Domain.Common.Models;
+namespace MedSolutions.Domain.Common.Entities;
 
-public class BusinessEntity : BaseEntity
+public abstract class BusinessEntity : BaseEntity
 {
     public int DisplayOrder { get; set; }
 

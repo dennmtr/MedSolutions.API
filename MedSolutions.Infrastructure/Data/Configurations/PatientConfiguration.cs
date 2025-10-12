@@ -1,26 +1,19 @@
 using MedSolutions.Domain.Entities;
-using MedSolutions.Infrastructure.Data.Helpers;
+using MedSolutions.Infrastructure.Data.Converters;
 using MedSolutions.Infrastructure.Data.ValueGenerators;
+using MedSolutions.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MedSolutions.Infrastructure.Data.Configurations;
 
-public class PatientConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeConfiguration<Patient>
+public class PatientConfiguration(DatabaseProviderInfo dbProviderInfo) : IEntityTypeConfiguration<Patient>
 {
-    private readonly DbProviderInfo _dbProviderInfo = dbProviderInfo;
+    private readonly DatabaseProviderInfo _dbProviderInfo = dbProviderInfo;
 
     public void Configure(EntityTypeBuilder<Patient> builder)
     {
-        builder.Property(p => p.AMKA)
-            .HasMaxLength(9)
-            .IsRequired(false);
-
-        builder.Property(p => p.PersonalIdNumber)
-            .HasMaxLength(12)
-            .IsRequired(false);
-
-        if (_dbProviderInfo.IsMySql() || _dbProviderInfo.IsSqlite())
+        if (_dbProviderInfo.IsSqlite())
         {
             builder.ToTable(p => p.HasCheckConstraint(
             "CK_AMKA_Length",
@@ -37,24 +30,52 @@ public class PatientConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeCo
                 .HasDefaultValueSql("UUID()");
         }
 
-        //if (_dbProviderInfo.IsMsAccess())
-        //{
-        //    builder.Property(p => p.Id)
-        //        .HasDefaultValueSql("CREATEGUID()");
-        //}
+        if (_dbProviderInfo.IsPostgreSql())
+        {
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()");
+        }
 
-        builder.HasIndex(p => new { p.MedicalProfileId, p.LastName });
-        builder.HasIndex(p => new { p.MedicalProfileId, p.LastNameLatin });
+        if (!_dbProviderInfo.IsSqlite())
+        {
+            builder.Property(p => p.Latitude)
+                .HasColumnType("decimal(9,6)");
+            builder.Property(p => p.Longitude)
+                .HasColumnType("decimal(9,6)");
+        }
+
+        // For online/offline sync background process
+        builder.HasIndex(a => new { a.MedicalProfileId, a.DateModified })
+        ;
+
+        builder.HasIndex(p => new { p.MedicalProfileId, p.LastNameLatin })
+            .HasFilter("IsDeleted = false")
+        ;
+
+        builder.HasIndex(p => new { p.MedicalProfileId, p.LastName })
+            .HasFilter("IsDeleted = false")
+        ;
+
+        builder.HasIndex(p => new { p.MedicalProfileId, p.MobileNumber })
+            .HasFilter("MobileNumber IS NOT NULL AND IsDeleted = false")
+        ;
+
+        builder.HasIndex(p => new { p.MedicalProfileId, p.PhoneNumber })
+            .HasFilter("PhoneNumber IS NOT NULL AND IsDeleted = false")
+        ;
 
         builder.HasIndex(p => new { p.MedicalProfileId, p.AMKA })
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("AMKA IS NOT NULL AND IsDeleted = false");
+        ;
 
         builder.HasIndex(p => new { p.MedicalProfileId, p.PersonalIdNumber })
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("PersonalIdNumber IS NOT NULL AND IsDeleted = false");
+        ;
 
         builder.Property(a => a.Biopsy)
-            .HasDefaultValueSql("0")
-            .ValueGeneratedOnAdd();
+            .HasDefaultValue(false);
 
         if (_dbProviderInfo.IsMySql())
         {
@@ -79,5 +100,7 @@ public class PatientConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeCo
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
 
+        builder.Property(p => p.Latitude).HasConversion(LatLngConverter.Instance);
+        builder.Property(p => p.Longitude).HasConversion(LatLngConverter.Instance);
     }
 }

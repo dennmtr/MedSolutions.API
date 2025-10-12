@@ -7,7 +7,7 @@ namespace MedSolutions.Infrastructure.Data.Seed.Fakers;
 
 public static class UserFaker
 {
-    public static Faker<User> CreateFaker(List<Enums.MedicalSpecialty> medicalSpecialtyIds, List<short> patientPairTypeIds, Dictionary<short, List<short>> appointmentTypes, string? locale = "en")
+    public static Faker<User> CreateFaker(List<Enums.MedicalSpecialty> medicalSpecialtyIds, List<Enums.PatientPairType> patientPairTypeIds, Dictionary<Enums.MedicalSpecialty, List<Enums.AppointmentType>> appointmentTypes, string? locale = "en")
     {
 
         Faker<User> faker = new Faker<User>(locale)

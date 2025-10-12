@@ -33,7 +33,7 @@ public static class PatientFaker
 
         return $"{firstPart.ToUpper()}{secondPart}{digits}";
     }
-    public static Faker<Patient> CreateFaker(Guid profileId, List<short> appointmentTypeIds, string locale = "en")
+    public static Faker<Patient> CreateFaker(Guid profileId, List<Enums.AppointmentType> appointmentTypeIds, string locale = "en")
     {
         return new Faker<Patient>(locale)
             .RuleFor(p => p.Id, _ => GuidExtensions.NewSequentialGuid())
@@ -46,8 +46,8 @@ public static class PatientFaker
             .RuleFor(p => p.Address, f => f.Address.StreetAddress().OrNull(f, 0.3f))
             .RuleFor(p => p.City, f => f.Address.City())
             .RuleFor(p => p.Zip, f => f.Address.ZipCode().OrNull(f, 0.3f))
-            .RuleFor(p => p.Latitude, f => f.Address.Latitude())
-            .RuleFor(p => p.Longitude, f => f.Address.Longitude())
+            .RuleFor(p => p.Latitude, f => (decimal)f.Address.Latitude())
+            .RuleFor(p => p.Longitude, f => (decimal)f.Address.Longitude())
             .RuleFor(p => p.PhoneNumber, f => GenerateGreekPhoneNumber(f).OrNull(f, 0.8f))
             .RuleFor(p => p.MobileNumber, f => GenerateGreekMobileNumber(f).OrNull(f, 0.1f))
             .RuleFor(p => p.AMKA, f => f.Random.ReplaceNumbers("###########"))

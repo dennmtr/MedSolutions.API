@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace MedSolutions.App.ViewModels;
 public class PatientViewModel
 {
@@ -16,8 +18,11 @@ public class PatientViewModel
     public string? MobileNumber { get; set; }
     public string? Email { get; set; }
     public bool? Biopsy { get; set; } = false;
-    public double? Latitude { get; set; }
-    public double? Longitude { get; set; }
+    [DisplayFormat(DataFormatString = "{0:F6}")]
+    public decimal? Latitude { get; set; }
+
+    [DisplayFormat(DataFormatString = "{0:F6}")]
+    public decimal? Longitude { get; set; }
     public DateTime? MostRecentAppointment { get; set; }
     public DateTime? NextScheduledAppointment { get; set; }
     public int AppointmentHistoryCount { get; set; }

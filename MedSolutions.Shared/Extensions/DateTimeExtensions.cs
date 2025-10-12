@@ -22,5 +22,11 @@ public static class DateTimeExtensions
             value.Kind
         );
     }
+    public static DateTime TrimToMilliseconds(this DateTime value)
+    {
+        long ticksPerMillisecond = TimeSpan.TicksPerMillisecond;
+        long trimmedTicks = value.Ticks - (value.Ticks % ticksPerMillisecond);
+        return new DateTime(trimmedTicks, value.Kind);
+    }
 
 }

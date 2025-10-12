@@ -1,21 +1,22 @@
 using MedSolutions.Domain.Entities;
-using MedSolutions.Infrastructure.Data.Helpers;
+using MedSolutions.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Enums = MedSolutions.Domain.Enums;
+using Specialty = MedSolutions.Domain.Enums.MedicalSpecialty;
 
 namespace MedSolutions.Infrastructure.Data.Configurations;
 
-public class MedicalSpecialtyConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeConfiguration<MedicalSpecialty>
+public class MedicalSpecialtyConfiguration(DatabaseProviderInfo dbProviderInfo) : IEntityTypeConfiguration<MedicalSpecialty>
 {
-    private readonly DbProviderInfo _dbProviderInfo = dbProviderInfo;
+    private readonly DatabaseProviderInfo _dbProviderInfo = dbProviderInfo;
 
     public void Configure(EntityTypeBuilder<MedicalSpecialty> builder)
     {
 
         builder.HasData(
-            new MedicalSpecialty { Id = Enums.MedicalSpecialty.Unspecified, Description = "Unspecified", BusinessId = "spec.generic", DisplayOrder = 10 },
-            new MedicalSpecialty { Id = Enums.MedicalSpecialty.Dermatology, Description = "Dermatology", BusinessId = "spec.dermatology", DisplayOrder = 20 }
+            new MedicalSpecialty { Id = Specialty.Unspecified, Description = "Unspecified", BusinessId = "spec.generic", DisplayOrder = 10 },
+            new MedicalSpecialty { Id = Specialty.Dermatology, Description = "Dermatology", BusinessId = "spec.dermatology", DisplayOrder = 20 }
         );
+
     }
 }

@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace MedSolutions.Domain.Common.Exceptions;
+namespace MedSolutions.Domain.Exceptions;
 
 public abstract class AppException : Exception
 {

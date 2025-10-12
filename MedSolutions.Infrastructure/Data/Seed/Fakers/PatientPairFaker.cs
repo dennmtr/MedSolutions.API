@@ -1,12 +1,13 @@
 using Bogus;
 using MedSolutions.Domain.Entities;
 using MedSolutions.Shared.Extensions;
+using Enums = MedSolutions.Domain.Enums;
 
 namespace MedSolutions.Infrastructure.Data.Seed.Fakers;
 
 public static class PatientPairFaker
 {
-    public static Faker<PatientPair> CreateFaker(Guid medicalProfileId, List<Guid> patientIds, List<short> patientPairTypeIds, string locale = "en")
+    public static Faker<PatientPair> CreateFaker(Guid medicalProfileId, List<Guid> patientIds, List<Enums.PatientPairType> patientPairTypeIds, string locale = "en")
     {
         return new Faker<PatientPair>(locale)
             .RuleFor(p => p.Id, _ => GuidExtensions.NewSequentialGuid())

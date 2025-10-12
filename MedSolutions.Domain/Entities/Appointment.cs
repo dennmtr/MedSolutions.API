@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MedSolutions.Domain.Common.Models;
+using MedSolutions.Domain.Common.Entities;
 
 namespace MedSolutions.Domain.Entities;
 
@@ -19,7 +19,7 @@ public class Appointment : VisibilityEntity
     public DateTime Date { get; set; }
 
     [ForeignKey(nameof(AppointmentType))]
-    public short AppointmentTypeId { get; set; }
+    public Enums.AppointmentType AppointmentTypeId { get; set; }
     public AppointmentType? AppointmentType { get; set; }
     public string? Comments { get; set; }
     public Enums.State? State { get; set; }

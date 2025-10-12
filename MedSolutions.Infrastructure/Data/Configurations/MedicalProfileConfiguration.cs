@@ -1,21 +1,23 @@
 using MedSolutions.Domain.Entities;
-using MedSolutions.Infrastructure.Data.Helpers;
+using MedSolutions.Infrastructure.Data.Converters;
+using MedSolutions.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MedSolutions.Infrastructure.Data.Configurations;
 
-public class MedicalProfileConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeConfiguration<MedicalProfile>
+public class MedicalProfileConfiguration(DatabaseProviderInfo dbProviderInfo) : IEntityTypeConfiguration<MedicalProfile>
 {
-    private readonly DbProviderInfo _dbProviderInfo = dbProviderInfo;
+    private readonly DatabaseProviderInfo _dbProviderInfo = dbProviderInfo;
 
     public void Configure(EntityTypeBuilder<MedicalProfile> builder)
     {
         builder.HasIndex(p => p.CompanyName);
+        ;
         builder.HasIndex(p => p.Tin);
-        builder.HasIndex(p => p.City);
-        builder.HasIndex(p => p.SubscriptionStartDate);
+        ;
         builder.HasIndex(p => p.SubscriptionEndDate);
+        ;
 
         if (_dbProviderInfo.IsMySql())
         {
@@ -23,11 +25,11 @@ public class MedicalProfileConfiguration(DbProviderInfo dbProviderInfo) : IEntit
                 .HasDefaultValueSql("UUID()");
         }
 
-        //if (_dbProviderInfo.IsMsAccess())
-        //{
-        //    builder.Property(p => p.Id)
-        //        .HasDefaultValueSql("CREATEGUID()");
-        //}
+        if (_dbProviderInfo.IsPostgreSql())
+        {
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()");
+        }
 
         builder.Property(a => a.MedicalSpecialtyId)
             .HasDefaultValueSql("1")
@@ -51,5 +53,9 @@ public class MedicalProfileConfiguration(DbProviderInfo dbProviderInfo) : IEntit
             .HasPrincipalKey(p => p.Id)
             .IsRequired(true)
             .OnDelete(DeleteBehavior.Restrict);
+
+
+        builder.Property(p => p.SubscriptionStartDate).HasConversion(DateTrimToMinutesConverter.Instance);
+        builder.Property(p => p.SubscriptionEndDate).HasConversion(DateTrimToMinutesConverter.Instance);
     }
 }

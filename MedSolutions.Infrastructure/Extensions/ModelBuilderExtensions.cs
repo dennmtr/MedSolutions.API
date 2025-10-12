@@ -1,8 +1,10 @@
 using System.Linq.Expressions;
-using MedSolutions.Domain.Common.Models;
+using MedSolutions.App.Interfaces;
+using MedSolutions.Domain.Common.Entities;
+using MedSolutions.Domain.Entities;
 using MedSolutions.Infrastructure.Data.Converters;
-using MedSolutions.Infrastructure.Data.Helpers;
 using MedSolutions.Infrastructure.Data.ValueGenerators;
+using MedSolutions.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -11,7 +13,7 @@ namespace MedSolutions.Infrastructure.Extensions;
 
 public static class ModelBuilderExtensions
 {
-    public static void ConfigureCaseInsensitive(this ModelBuilder modelBuilder, DbProviderInfo dbProviderInfo)
+    public static void ConfigureCaseInsensitive(this ModelBuilder modelBuilder, DatabaseProviderInfo dbProviderInfo)
     {
         if (!dbProviderInfo.IsSqlite())
         {
@@ -27,7 +29,7 @@ public static class ModelBuilderExtensions
             }
         }
     }
-    public static void ConfigureGuids(this ModelBuilder modelBuilder, DbProviderInfo dbProviderInfo)
+    public static void ConfigureGuids(this ModelBuilder modelBuilder, DatabaseProviderInfo dbProviderInfo)
     {
         if (!dbProviderInfo.IsSqlite())
         {
@@ -52,7 +54,7 @@ public static class ModelBuilderExtensions
             }
         }
     }
-    public static void ConfigureSequentialGuids(this ModelBuilder modelBuilder, DbProviderInfo dbProviderInfo)
+    public static void ConfigureSequentialGuids(this ModelBuilder modelBuilder, DatabaseProviderInfo dbProviderInfo)
     {
         foreach (var entity in modelBuilder.Model.GetEntityTypes())
         {
@@ -66,7 +68,7 @@ public static class ModelBuilderExtensions
         }
     }
 
-    public static void UseLowercaseGuids(this ModelBuilder modelBuilder, DbProviderInfo dbProviderInfo)
+    public static void UseLowercaseGuids(this ModelBuilder modelBuilder, DatabaseProviderInfo dbProviderInfo)
     {
         if (!dbProviderInfo.IsSqlite())
         {
@@ -88,7 +90,7 @@ public static class ModelBuilderExtensions
         }
     }
 
-    public static void ConfigureBusinessEntity(this ModelBuilder modelBuilder, DbProviderInfo dbProviderInfo)
+    public static void ConfigureBusinessEntity(this ModelBuilder modelBuilder, DatabaseProviderInfo dbProviderInfo)
     {
         IEnumerable<IMutableEntityType> entityTypes = modelBuilder.Model.GetEntityTypes();
 
@@ -98,11 +100,20 @@ public static class ModelBuilderExtensions
             {
                 EntityTypeBuilder entityBuilder = modelBuilder.Entity(entityType.ClrType);
 
-                entityBuilder.HasIndex("DisplayOrder")
-                .IsUnique();
+                var medicalSpecialtyProperty = entityType.FindProperty("MedicalSpecialtyId");
 
-                entityBuilder.Property("BusinessId")
-                    .IsRequired();
+                if (medicalSpecialtyProperty != null)
+                {
+                    entityBuilder.HasIndex("MedicalSpecialtyId", "DisplayOrder")
+                        .IsUnique()
+                        ;
+                }
+                else
+                {
+                    entityBuilder.HasIndex("DisplayOrder")
+                        .IsUnique()
+                        ;
+                }
 
                 entityBuilder.HasIndex("BusinessId")
                 .IsUnique();
@@ -127,7 +138,29 @@ public static class ModelBuilderExtensions
         }
     }
 
-    public static void ConfigureBaseEntity(this ModelBuilder modelBuilder, DbProviderInfo dbProviderInfo)
+    public static void ApplyFilters(this ModelBuilder modelBuilder, IAppContextProvider appContextProvider)
+    {
+        // Don't store profileProvider.MedicalProfileId in a local variable (var medicalProfileId =).
+        // EF caches query filters at model build time, locals become constants.
+        // Access the provider property directly so its evaluated dynamically per query.
+
+        if (appContextProvider.IsVisibilityModeEnabled)
+        {
+            modelBuilder.Entity<Appointment>()
+                .HasQueryFilter(p => p.MedicalProfileId == appContextProvider.CurrentMedicalProfileId && !p.IsHidden && !p.IsDeleted);
+        }
+        else
+        {
+            modelBuilder.Entity<Appointment>()
+                .HasQueryFilter(p => p.MedicalProfileId == appContextProvider.CurrentMedicalProfileId && !p.IsDeleted);
+        }
+        modelBuilder.Entity<Patient>()
+            .HasQueryFilter(p => p.MedicalProfileId == appContextProvider.CurrentMedicalProfileId && !p.IsDeleted);
+        modelBuilder.Entity<PatientPair>()
+            .HasQueryFilter(p => p.MedicalProfileId == appContextProvider.CurrentMedicalProfileId && !p.IsDeleted);
+    }
+
+    public static void ConfigureBaseEntity(this ModelBuilder modelBuilder, DatabaseProviderInfo dbProviderInfo)
     {
         IEnumerable<IMutableEntityType> entityTypes = modelBuilder.Model.GetEntityTypes();
 
@@ -137,22 +170,24 @@ public static class ModelBuilderExtensions
             {
                 EntityTypeBuilder entityBuilder = modelBuilder.Entity(entityType.ClrType);
 
-                entityBuilder.HasIndex("IsDeleted");
-                entityBuilder.HasIndex("DateModified");
-                entityBuilder.HasIndex("DateCreated");
+                var hasMedicalProfileId = entityType.FindProperty("MedicalProfileId") != null;
+
+                if (hasMedicalProfileId)
+                {
+                    entityBuilder.HasIndex("MedicalProfileId", "DateModified");
+                    entityBuilder.HasIndex("MedicalProfileId", "IsDeleted");
+                }
 
                 entityBuilder.Property("IsDeleted")
-                    .HasDefaultValueSql("0")
-                    .ValueGeneratedOnAdd();
+                    .HasDefaultValue(false);
 
                 var parameter = Expression.Parameter(entityType.ClrType, "e");
                 var property = Expression.Property(parameter, "IsDeleted");
 
-                var notDeleted = Expression.NotEqual(property, Expression.Constant(true, typeof(bool?)));
+                var notDeleted = Expression.Equal(property, Expression.Constant(false));
 
                 var filter = Expression.Lambda(notDeleted, parameter);
                 entityBuilder.HasQueryFilter(filter);
-
 
                 if (dbProviderInfo.IsSqlite())
                 {
@@ -160,8 +195,39 @@ public static class ModelBuilderExtensions
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
                     entityBuilder.Property("DateCreated")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
                 }
+                if (dbProviderInfo.IsMySql())
+                {
+                    entityBuilder.Property("DateCreated")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    entityBuilder.Property("DateModified")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasComputedColumnSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+
+                    entityBuilder.Property("DateModified")
+                        .HasColumnType("DATETIME(3)");
+
+                    entityBuilder.Property("DateCreated")
+                        .HasColumnType("DATETIME(3)");
+                }
+                if (dbProviderInfo.IsPostgreSql())
+                {
+                    entityBuilder.Property("DateCreated")
+                        .HasDefaultValueSql("now()");
+
+                    entityBuilder.Property("DateModified")
+                        .HasDefaultValueSql("now()");
+
+                    entityBuilder.Property("DateModified")
+                        .HasColumnType("TIMESTAMP(3) WITHOUT TIME ZONE");
+
+                    entityBuilder.Property("DateCreated")
+                        .HasColumnType("TIMESTAMP(3) WITHOUT TIME ZONE");
+                }
+
+
             }
         }
     }

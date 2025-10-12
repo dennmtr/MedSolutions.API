@@ -2,12 +2,13 @@ using System.Text;
 using System.Threading.RateLimiting;
 using MedSolutions.Api.Exceptions;
 using MedSolutions.Api.Filters;
-using MedSolutions.Api.Services;
+using MedSolutions.Api.Providers;
 using MedSolutions.App.Interfaces;
 using MedSolutions.App.Mapping;
 using MedSolutions.Domain.Entities;
 using MedSolutions.Infrastructure.Data;
 using MedSolutions.Infrastructure.Data.Interceptors;
+using MedSolutions.Shared.Enums;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
@@ -20,9 +21,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApi(this IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
     {
-        services.AddScoped<ApiResponseWrapperFilter>();
-        services.AddScoped<ICurrentMedicalProfileService, CurrentMedicalProfileService>();
         services.AddHttpContextAccessor();
+
+        services.AddScoped<ApiResponseWrapperFilter>();
+        services.AddScoped<IAppContextProvider, AppContextProvider>();
 
         services.AddControllers()
             .ConfigureApiBehaviorOptions(options => {
@@ -42,25 +44,30 @@ public static class DependencyInjection
         services.AddOpenApi();
 
         services.AddDbContext<MedSolutionsDbContext>(option => {
-            string? connectionString = config.GetConnectionString("MedSolutions");
 
-            if (env.IsDevelopment())
+            var connectionString = config.GetConnectionString("DefaultConnection");
+            var databaseProvider = new DatabaseProviderInfo(connectionString is not null ? config["Data:Provider:Name"] : string.Empty);
+
+            if (databaseProvider.IsMySql())
             {
-                if (string.IsNullOrEmpty(connectionString))
-                {
-                    string dbPath = Path.Combine(Path.GetTempPath(), "MedSolutions", "data.sqlite");
-                    connectionString = $"Data Source=\"{dbPath}\"";
-                }
-                option.UseSqlite(connectionString);
-                option.EnableSensitiveDataLogging();
-                option.EnableDetailedErrors();
-                option.AddInterceptors(new SqliteForeignKeyEnabler());
+                string databaseProviderVersion = config["Data:Provider:Version"] ?? string.Empty;
+                option.UseMySql(connectionString, new MySqlServerVersion(new Version(databaseProviderVersion)), x => x.UseNetTopologySuite());
             }
             else
             {
-                string? version = config.GetValue<string>("Database:MySQL:Version");
-                option.UseMySql(connectionString,
-                new MySqlServerVersion(new Version(version)), x => x.UseNetTopologySuite());
+                if (connectionString is null)
+                {
+                    var appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MedSolutions");
+                    Directory.CreateDirectory(appPath);
+                    connectionString = $"Data Source=\"{Path.Combine(appPath, "data.sqlite")}\"; FOREIGN KEYS=TRUE;";
+                }
+                option.UseSqlite(connectionString);
+                option.AddInterceptors(new SqliteForeignKeyEnabler());
+            }
+            if (env.IsDevelopment())
+            {
+                option.EnableSensitiveDataLogging();
+                option.EnableDetailedErrors();
             }
         });
 

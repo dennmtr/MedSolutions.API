@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using MedSolutions.Domain.Common.Models;
+using MedSolutions.Domain.Common.Entities;
 
 namespace MedSolutions.Domain.Entities;
 
@@ -18,7 +18,7 @@ public class PatientPair : BaseEntity
     public Guid PairedPatientId { get; set; }
     public Patient? PairedPatient { get; set; }
     [ForeignKey(nameof(PatientPairType))]
-    public short PatientPairTypeId { get; set; } = 1;
+    public Enums.PatientPairType PatientPairTypeId { get; set; } = Enums.PatientPairType.Other;
     public PatientPairType? PatientPairType { get; set; }
 
     /// Ensures the patient pair is stored correctly to avoid duplicates.

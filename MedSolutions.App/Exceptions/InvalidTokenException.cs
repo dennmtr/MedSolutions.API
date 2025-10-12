@@ -1,5 +1,5 @@
 using System.Net;
-using MedSolutions.Domain.Common.Exceptions;
+using MedSolutions.Domain.Exceptions;
 
 namespace MedSolutions.App.Exceptions;
 

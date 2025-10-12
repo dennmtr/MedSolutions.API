@@ -1,22 +1,21 @@
 using MedSolutions.Domain.Entities;
-using MedSolutions.Infrastructure.Data.Helpers;
+using MedSolutions.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MedSolutions.Infrastructure.Data.Configurations;
 
-public class UserConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeConfiguration<User>
+public class UserConfiguration(DatabaseProviderInfo dbProviderInfo) : IEntityTypeConfiguration<User>
 {
-    private readonly DbProviderInfo _dbProviderInfo = dbProviderInfo;
+    private readonly DatabaseProviderInfo _dbProviderInfo = dbProviderInfo;
 
     public void Configure(EntityTypeBuilder<User> builder)
     {
 
-        builder.HasIndex(p => p.Email);
-        builder.HasIndex(p => p.LastName);
-        builder.HasIndex(p => p.PhoneNumber);
-        builder.HasIndex(p => p.MobileNumber);
-        builder.HasIndex(p => p.IsActive);
+        builder.HasIndex(p => new { p.Email, p.IsActive });
+        builder.HasIndex(p => new { p.LastName, p.IsActive });
+        builder.HasIndex(p => new { p.PhoneNumber, p.IsActive });
+        builder.HasIndex(p => new { p.MobileNumber, p.IsActive });
 
         builder.Property(a => a.IsActive)
             .HasDefaultValueSql("1")
@@ -28,10 +27,10 @@ public class UserConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeConfi
                 .HasDefaultValueSql("UUID()");
         }
 
-        //if (_dbProviderInfo.IsMsAccess())
-        //{
-        //    builder.Property(p => p.Id)
-        //        .HasDefaultValueSql("CREATEGUID()");
-        //}
+        if (_dbProviderInfo.IsPostgreSql())
+        {
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()");
+        }
     }
 }

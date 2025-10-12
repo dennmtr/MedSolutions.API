@@ -54,7 +54,7 @@ public class Seeder(
             var appointmentTypes = await _dbContext.AppointmentTypes
                 .GroupBy(a => a.MedicalSpecialtyId)
                 .ToDictionaryAsync(
-                    g => (short)g.Key,
+                    g => g.Key,
                     g => g.Select(a => a.Id).ToList()
                 );
 
@@ -87,7 +87,7 @@ public class Seeder(
                 await _userManager.CreateAsync(user, password);
             }
 
-            _logger.PairsCreatedSuccessfully(fakeUsers.Count);
+            _logger.ProfilesCreatedSuccessfully(fakeUsers.Count);
 
             if (initialUser != null)
             {

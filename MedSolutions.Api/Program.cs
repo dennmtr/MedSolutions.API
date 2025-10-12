@@ -42,7 +42,7 @@ app.UseSerilogRequestLogging(options => {
 });
 
 // DEVELOPMENT ONLY: This section drops, creates, or migrates the database automatically.
-// ⚠️ Do NOT use this in production! It will delete your data if EnsureDeletedAsync() is executed.
+// Do NOT use this in production! It will delete your data if EnsureDeletedAsync() is executed.
 if (app.Environment.IsDevelopment())
 {
     using IServiceScope scope = app.Services.CreateScope();
@@ -70,6 +70,7 @@ if (app.Environment.IsDevelopment())
     }
 
     await seeder.SeedAsync();
+
 }
 app.UseMiddleware<ErrorHandlingMiddleware>();
 

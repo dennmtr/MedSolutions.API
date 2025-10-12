@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-
+using MedSolutions.Domain.Enums;
 namespace MedSolutions.App.DTOs;
 
 public class PatientBaseDTO
@@ -32,7 +32,7 @@ public class PatientBaseDTO
     public string? PersonalIdNumber { get; set; }
 
     [Required]
-    public Domain.Enums.Gender Gender { get; set; }
+    public Gender Gender { get; set; }
 
     [Display(Name = "Date of Birth")]
     public DateOnly? BirthDate { get; set; }
@@ -65,6 +65,8 @@ public class PatientBaseDTO
     [MaxLength(255)]
     public string? Referrer { get; set; }
     public bool? Biopsy { get; set; } = false;
-    public double? Latitude { get; set; }
-    public double? Longitude { get; set; }
+    [Range(-90, 90)]
+    public decimal? Latitude { get; set; }
+    [Range(-180, 180)]
+    public decimal? Longitude { get; set; }
 }

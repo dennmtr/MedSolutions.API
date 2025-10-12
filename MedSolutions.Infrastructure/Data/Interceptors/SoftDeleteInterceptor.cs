@@ -1,5 +1,6 @@
-using MedSolutions.Domain.Common.Models;
+using MedSolutions.Domain.Common.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace MedSolutions.Infrastructure.Data.Interceptors;
@@ -20,10 +21,10 @@ public class SoftDeleteInterceptor : ISaveChangesInterceptor
 
     public static void OnSavingChanges(DbContext context)
     {
-        IEnumerable<Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<BaseEntity>> entries = context.ChangeTracker.Entries<BaseEntity>()
+        IEnumerable<EntityEntry<BaseEntity>> entries = context.ChangeTracker.Entries<BaseEntity>()
             .Where(e => e.State == EntityState.Deleted);
 
-        foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<BaseEntity>? entry in entries)
+        foreach (EntityEntry<BaseEntity>? entry in entries)
         {
             entry.State = EntityState.Modified;
             entry.Entity.IsDeleted = true;

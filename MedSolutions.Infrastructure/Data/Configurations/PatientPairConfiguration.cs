@@ -1,17 +1,21 @@
 using MedSolutions.Domain.Entities;
-using MedSolutions.Infrastructure.Data.Helpers;
+using MedSolutions.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace MedSolutions.Infrastructure.Data.Configurations;
 
-public class PatientPairConfiguration(DbProviderInfo dbProviderInfo) : IEntityTypeConfiguration<PatientPair>
+public class PatientPairConfiguration(DatabaseProviderInfo dbProviderInfo) : IEntityTypeConfiguration<PatientPair>
 {
-    private readonly DbProviderInfo _dbProviderInfo = dbProviderInfo;
+    private readonly DatabaseProviderInfo _dbProviderInfo = dbProviderInfo;
 
     public void Configure(EntityTypeBuilder<PatientPair> builder)
     {
+        // For online/offline sync background process
+        builder.HasIndex(a => new { a.MedicalProfileId, a.DateModified })
+        ;
+
         builder.HasIndex(p => new { p.MedicalProfileId, p.PatientId, p.PairedPatientId })
+            .HasFilter("IsDeleted = false")
         .IsUnique();
 
         if (_dbProviderInfo.IsMySql() || _dbProviderInfo.IsSqlite())
@@ -28,15 +32,15 @@ public class PatientPairConfiguration(DbProviderInfo dbProviderInfo) : IEntityTy
                 .HasDefaultValueSql("UUID()");
         }
 
-        //if (_dbProviderInfo.IsMsAccess())
-        //{
-        //    builder.Property(p => p.Id)
-        //        .HasDefaultValueSql("CREATEGUID()");
-        //}
+        if (_dbProviderInfo.IsPostgreSql())
+        {
+            builder.Property(p => p.Id)
+                .HasDefaultValueSql("gen_random_uuid()");
+        }
 
-        builder.Property(p => p.PatientPairTypeId)
-            .HasDefaultValueSql("1")
-            .ValueGeneratedOnAdd();
-
+        builder.HasOne(p => p.PatientPairType)
+            .WithMany()
+            .HasForeignKey(p => p.PatientPairTypeId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
